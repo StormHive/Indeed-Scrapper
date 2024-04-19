@@ -9,16 +9,17 @@ import random
 
 
 class IndeedJobScraper:
-    def __init__(self):
+    def __init__(self, search_term):
         self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 3)
+        self.search_term = search_term
 
     def navigate_to_indeed(self):
         self.driver.get("https://ca.indeed.com/")
 
-    def search_jobs(self, search_term):
+    def search_jobs(self):
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
-        search_bar.send_keys(search_term)
+        search_bar.send_keys(self.search_term)
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
         time.sleep(random.randint(1, 2))
@@ -54,8 +55,11 @@ class IndeedJobScraper:
 
             for item in job_list_items:
                 try:
-                    item.click()
-                    time.sleep(random.randint(1, 2))
+                    if self.search_term in item.text:
+                        item.click()
+                        time.sleep(random.randint(1, 2))
+                    else:
+                        continue
                     try:
                         posted_at = self.extract_posted_at(item)
                     except Exception as e:
@@ -162,9 +166,9 @@ class IndeedJobScraper:
 
 
 if __name__ == "__main__":
-    job_scraper = IndeedJobScraper()
+    job_scraper = IndeedJobScraper("Data Scientist")
     job_scraper.navigate_to_indeed()
-    job_scraper.search_jobs("Data Scientist")
+    job_scraper.search_jobs()
     filters = {
         "date": "last 24 hours",
         "remote": "remote",
