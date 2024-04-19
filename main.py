@@ -5,12 +5,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import csv
 import time
+import random
 
 
 class IndeedJobScraper:
     def __init__(self):
         self.driver = webdriver.Chrome()
-        self.wait = WebDriverWait(self.driver, 10)
+        self.wait = WebDriverWait(self.driver, 3)
 
     def navigate_to_indeed(self):
         self.driver.get("https://ca.indeed.com/")
@@ -20,7 +21,7 @@ class IndeedJobScraper:
         search_bar.send_keys(search_term)
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
-        time.sleep(2)
+        time.sleep(random.randint(1, 2))
 
     def apply_filters(self, filters):
         for filter_name, filter_value in filters.items():
@@ -42,7 +43,7 @@ class IndeedJobScraper:
                                 if filter_value.lower() in a_tag.text.lower():
                                     href = a_tag.get_attribute("href")
                                     self.driver.get(href)
-                            time.sleep(2)
+                            time.sleep(random.randint(1, 2))
             except Exception as e:
                 print("Error occurred:", e)
 
@@ -54,7 +55,7 @@ class IndeedJobScraper:
             for item in job_list_items:
                 try:
                     item.click()
-                    time.sleep(2)
+                    time.sleep(random.randint(1, 2))
                     try:
                         posted_at = self.extract_posted_at(item)
                     except Exception as e:
@@ -75,7 +76,7 @@ class IndeedJobScraper:
         return posted_at_text[:-8]
 
     def extract_job_details(self):
-        time.sleep(2)
+        time.sleep(random.randint(1, 2))
         job_title_text_header = ""
         company_link = ""
         company_location = ""
