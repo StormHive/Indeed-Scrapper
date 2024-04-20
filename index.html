@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    <nav class="et-hero-tabs">
+        <a href="https://www.allcollarrecruiting.com/">
+            <img src="logo-removebg-preview.png"
+                style="width: 32%; aspect-ratio: 2/2 ; object-fit: contain; margin: 5px;" alt="All Collar Recruiting">
+        </a>
+    </nav>
+    <div class="centered-container">
+        <div class="container-fluid data-box">
+            <div class="row split-container">
+                <div class="col-lg-4 left-part">
+                    <div class="container-fluid" style="margin-top: 20px; padding-left: 20px;">
+                        <h1
+                            style="text-align: center; margin-bottom: 35px !important; margin: 0; letter-spacing: .2rem;">
+                            Jobs on Indeed</h1>
+                        <form class="">
+                            <h3 style="color: #000;">Enter Job</h3>
+                            <input class="form-control searchbox" style="color: #000; padding: 10px 15px;" type="search"
+                                placeholder="Job Title" aria-label="Search">
+                        </form>
+                        <form class="">
+                            <h4 class="text">Add Company</h4>
+                            <input class="form-control searchbox" style="color: #000; padding: 10px 15px;" type="search"
+                                placeholder="Company" aria-label="Search">
+                        </form>
+                        <h2>
+                            <small style="color: #000;">Add Filters</small>
+                        </h2>
+                        <div class="dropdown custom-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Date Job posted
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">Last 24 hours</a></li>
+                                <li><a class="dropdown-item" href="#">Last 3 days</a></li>
+                                <li><a class="dropdown-item" href="#">Last 7 days</a></li>
+                                <li><a class="dropdown-item" href="#">Last 14 days</a></li>
+                                <li><a class="dropdown-item" href="#">Last 30 days</a></li>
+                                <li><a class="dropdown-item" href="#">Over 30 days</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown custom-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Job type
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">Full time</a></li>
+                                <li><a class="dropdown-item" href="#">Part time</a></li>
+                                <li><a class="dropdown-item" href="#">Contract</a></li>
+                                <li><a class="dropdown-item" href="#">Temporary</a></li>
+                                <li><a class="dropdown-item" href="#">Remote</a></li>
+                                <li><a class="dropdown-item" href="#">Hybrid</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown custom-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select State
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                                style="height: 200px; overflow-y: auto;">
+                                <li><a value="AL">Alabama</a></li>
+                                <li><a value="AK">Alaska</a></li>
+                                <li><a value="AZ">Arizona</a></li>
+                                <li><a value="AR">Arkansas</a></li>
+                                <li><a value="CA">California</a></li>
+                                <li><a value="CO">Colorado</a></li>
+                                <li><a value="CT">Connecticut</a></li>
+                                <li><a value="DE">Delaware</a></li>
+                                <li><a value="FL">Florida</a></li>
+                                <li><a value="GA">Georgia</a></li>
+                                <li><a value="HI">Hawaii</a></li>
+                                <li><a value="ID">Idaho</a></li>
+                                <li><a value="IL">Illinois</a></li>
+                                <li><a value="IN">Indiana</a></li>
+                                <li><a value="IA">Iowa</a></li>
+                                <li><a value="KS">Kansas</a></li>
+                                <li><a value="KY">Kentucky</a></li>
+                                <li><a value="LA">Louisiana</a></li>
+                                <li><a value="ME">Maine</a></li>
+                                <li><a value="MD">Maryland</a></li>
+                                <li><a value="MA">Massachusetts</a></li>
+                                <li><a value="MI">Michigan</a></li>
+                                <li><a value="MN">Minnesota</a></li>
+                                <li><a value="MS">Mississippi</a></li>
+                                <li><a value="MO">Missouri</a></li>
+                                <li><a value="MT">Montana</a></li>
+                                <li><a value="NE">Nebraska</a></li>
+                                <li><a value="NV">Nevada</a></li>
+                                <li><a value="NH">New Hampshire</a></li>
+                                <li><a value="NJ">New Jersey</a></li>
+                                <li><a value="NM">New Mexico</a></li>
+                                <li><a value="NY">New York</a></li>
+                                <li><a value="NC">North Carolina</a></li>
+                                <li><a value="ND">North Dakota</a></li>
+                                <li><a value="OH">Ohio</a></li>
+                                <li><a value="OK">Oklahoma</a></li>
+                                <li><a value="OR">Oregon</a></li>
+                                <li><a value="PA">Pennsylvania</a></li>
+                                <li><a value="RI">Rhode Island</a></li>
+                                <li><a value="SC">South Carolina</a></li>
+                                <li><a value="SD">South Dakota</a></li>
+                                <li><a value="TN">Tennessee</a></li>
+                                <li><a value="TX">Texas</a></li>
+                                <li><a value="UT">Utah</a></li>
+                                <li><a value="VT">Vermont</a></li>
+                                <li><a value="VA">Virginia</a></li>
+                                <li><a value="WA">Washington</a></li>
+                                <li><a value="WV">West Virginia</a></li>
+                                <li><a value="WI">Wisconsin</a></li>
+                                <li><a value="WY">Wyoming</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown custom-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
+                                style="margin-bottom: 20px;" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Posted By
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">Employer</a></li>
+                                <li><a class="dropdown-item" href="#">Staffing agency</a></li>
+                            </ul>
+                        </div>
+                        <label for="minimum" class="form-label">Minimum Salary</label>
+                        <input type="range" class="form-range" id="minimum">
+                        <label for="maximum" class="form-label">Maximum Salary</label>
+                        <input type="range" class="form-range" id="maximum">
+
+
+                        <div class="dropdown custom-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Experience level
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">Entry level</a></li>
+                                <li><a class="dropdown-item" href="#">Mid level</a></li>
+                                <li><a class="dropdown-item" href="#">Senior level</a></li>
+                                <li><a class="dropdown-item" href="#">No experience required</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown custom-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Education
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">High school degree</a></li>
+                                <li><a class="dropdown-item" href="#">Associate degree</a></li>
+                                <li><a class="dropdown-item" href="#">Bachelors degree</a></li>
+                                <li><a class="dropdown-item" href="#">Masters degree</a></li>
+                                <li><a class="dropdown-item" href="#">Doctoral degree</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown custom-dropdown">
+                            <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Keywords
+                            </button>
+                            <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">urgently hiring</a></li>
+                                <li><a class="dropdown-item" href="#">hiring multiple candidates</a></li>
+                                <li><a class="dropdown-item" href="#">bonus</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control textarea" placeholder="Leave a comment here"
+                                id="floatingTextarea"></textarea>
+                            <label for="floatingTextarea">More Keywords</label>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control textarea" placeholder="i.e. staffing companies, schools etc"
+                                id="floatingTextarea"></textarea>
+                            <label for="floatingTextarea">Exclusions</label>
+                        </div>
+                        <div class="search-button" onclick="showLoader();">
+                            <form>
+                                <a href="#">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    Search
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 right-part">
+                    <h1 class="m-5">Results</h1>
+                    <div class="container" style="width: 100%;">
+                        <div class="rounded-box" style="width: 100%;">
+                            <table class="table table-bordered table-striped table-hover" style="width: max-content; overflow: auto;">
+                                <thead style="background-color: #f5f5f5; 
+                                        color: #333;">
+                                    <tr>
+                                        <th scope="col">Job Posted</th>
+                                        <th scope="col">Job Ttile</th>
+                                        <th scope="col">Indeed Link</th>
+                                        <th scope="col">Company</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Pay</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Experience</th>
+                                        <th scope="col">Education</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
