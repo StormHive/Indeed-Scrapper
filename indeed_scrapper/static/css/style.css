@@ -1,8 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 body {
   background: rgb(195, 253, 255);
   background: radial-gradient(
@@ -11,35 +7,14 @@ body {
     rgba(0, 223, 255, 1) 50%,
     rgba(194, 245, 255, 1) 100%
   );
-  /* font-family: "Noto Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal; */
-    /* font-family: "Noto Sans", sans-serif; */
-  /* font-family: Georgia, serif; */
-  /* font-family: 'Roboto', sans-serif; */
-  /* font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto; */
-  /* font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: auto;
-  font-style: normal; */
-  font-family: "Mulish", sans-serif;
+  font-style: normal;
   font-optical-sizing: auto;
 }
 
-.data-box {
-  border-radius: 30px;
-  margin: 36px;
-  background-color: #fff;
-  box-shadow: 0px 0px 10px rgba(131, 131, 131, 0.4); /* Add shadow for depth */
-  width: 90%;
-  height: 90%;
-}
-.centered-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: auto;
-}
+
+/* NAV */
 .et-hero-tabs {
   display: flex;
   flex-direction: column;
@@ -56,52 +31,31 @@ body {
   text-align: center;
   padding: 0 2em;
   z-index: 100;
-  h1 {
-    font-size: 2rem;
-    margin: 0;
-    letter-spacing: 1rem;
-  }
-  h3 {
-    font-size: 1rem;
-    letter-spacing: 0.3rem;
-    opacity: 0.6;
-  }
 }
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+}
+
+.data-box {
+  border-radius: 30px;
+  margin: 36px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(131, 131, 131, 0.4); /* Add shadow for depth */
+}
+
 .split-container {
   display: flex;
 }
+
 .left-part {
   border-right: 1px dotted #000;
-  border-top-left-radius: 30px; /* Radius for top-left corner */
+  border-top-left-radius: 30px; 
   border-bottom-left-radius: 30px;
-  padding-right: 10px; /* Adjust the spacing between the parts */
-  background: rgb(248, 248, 248);
-  /* background: linear-gradient(
-    0deg,
-    rgba(230, 230, 230, 1) 0%,
-    rgba(248, 248, 248, 1) 78%
-  ); */
-}
-.right-part {
-  flex: 60%;
-  padding-left: 10px; /* Adjust the spacing between the parts */
-}
-.half-screen-box {
-  width: 40%;
-  height: auto;
-  background-color: #f0f0f0;
-  box-shadow: 0 4px 6px rgba(42, 42, 42, 0.2); /* Add a subtle shadow for depth */
-}
-.et-hero-tabs img {
-  width: 200px; /* Adjust the width of the logo */
-  height: auto; /* Maintain aspect ratio */
-}
-.rounded-box {
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  background-color: #fff;
-  margin-top: 20px;
+  padding-right: 10px;
+  padding-left: 0px !important;
+  background: rgb(240, 240, 240);
 }
 
 .searchbox {
@@ -111,14 +65,23 @@ body {
   margin-bottom: 20px;
 }
 
-.textarea {
-  border: 1px solid #1b1b1b;
-  padding: 5px 6px;
+.white-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background-color: #ffffff;
   margin-top: 20px;
-  margin-bottom: 10px;
-  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
-
+.top-left,
+.top-right,
+.bottom-left,
+.bottom-right {
+    display: flex;
+}
 
 .custom-dropdown {
   position: relative;
@@ -147,9 +110,9 @@ body {
   );
 }
 
-.custom-dropdown-menu {
+.custom-dropdown-menu select{
   position: absolute;
-  background-color: #fffcfc;
+  background-color: #fffcfc !important;
   min-width: 120px;
   box-shadow: 0px 8px 16px 0px rgba(117, 117, 117, 0.2);
   z-index: 1;
@@ -160,30 +123,37 @@ body {
   border-radius: 5px;
 }
 
-.custom-dropdown-menu option {
+ .option {
   padding: 5px 16px;
   text-decoration: none;
   color: #000;
   display: block;
 }
 
-.custom-dropdown-menu option:hover {
-  background-color: rgb(233, 236, 239); /* Lighter Gray */
+.option:hover {
+  background-color: rgb(233, 236, 239) !important; /* Lighter Gray */
 }
+
+
+.textarea {
+  border: 1px solid #1b1b1b;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
 .search-button form a {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
   background: #fffcfc;
   color: #000000;
-  font-size: 16px;
   text-decoration: none;
   text-transform: uppercase;
   overflow: hidden;
   transition: 0.5s;
   margin-top: 20px;
   margin-bottom: 20px;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   border-radius: 5px;
 }
 
@@ -197,7 +167,6 @@ body {
 
 .search-button a span {
   position: absolute;
-  display: block;
 }
 
 .search-button a:hover span:nth-child(1),
@@ -286,10 +255,39 @@ body {
     bottom: 100%;
   }
 }
+
+
+.right-part {
+  flex: 60%;
+  padding-left: 10px; 
+}
+
+.rounded-box {
+  overflow: scroll;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: #fff;
+  margin-top: 20px;
+}
+
+
+
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none; /* Initially hidden */
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(5px); /* Apply backdrop blur effect */
+  z-index: 9999;
+}
+
 .loader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   border-radius: 50%;
   height: 96px;
   width: 96px;
@@ -297,6 +295,10 @@ body {
   background-color: #9b59b6;
   background-image: linear-gradient(#9b59b6, #84cdfa, #5ad1cd);
 }
+
+/* Rest of the loader styling remains the same */
+
+
 
 .loader span {
   position: absolute;
@@ -352,4 +354,65 @@ body {
 
 
 
+<style>
+/*the container must be positioned relative:*/
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
 
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+</style>

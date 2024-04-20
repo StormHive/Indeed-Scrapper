@@ -7,7 +7,7 @@ from .scrapper import IndeedJobScraper
 
 class ScrapeJobsView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'index.html')
+        return render(request, 'index2.html')
 
     def post(self, request, *args, **kwargs):
         search_term = request.POST.get('search_term', '').strip()
