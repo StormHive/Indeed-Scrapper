@@ -207,7 +207,9 @@ class IndeedJobScraper:
                      job_education_level, job_description):
         headers = ['Posted At', 'Job Title', 'Company Link', 'Company Location', 'Job Type', 'Job Salary',
                    'Job Experience Level', 'Job Education', 'Job Description']
-        filename = "job_details3.csv"
+        
+        filename = f"{self.search_term}.csv"
+        filename = filename.replace(" ", "_")
         with open(filename, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             if file.tell() == 0:

@@ -148,7 +148,6 @@ body {
 }
 
 .custom-dropdown-menu {
-  display: none;
   position: absolute;
   background-color: #fffcfc;
   min-width: 120px;
@@ -161,14 +160,14 @@ body {
   border-radius: 5px;
 }
 
-.custom-dropdown-menu li {
+.custom-dropdown-menu option {
   padding: 5px 16px;
   text-decoration: none;
   color: #000;
   display: block;
 }
 
-.custom-dropdown-menu li:hover {
+.custom-dropdown-menu option:hover {
   background-color: rgb(233, 236, 239); /* Lighter Gray */
 }
 .search-button form a {
@@ -345,3 +344,12 @@ body {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
+
+
+
+
+
+
+
+

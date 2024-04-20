@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
@@ -12,7 +13,7 @@
         crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="script.js"></script>
 
     <title>Document</title>
@@ -27,7 +28,7 @@
       </div>
     <nav class="et-hero-tabs">
         <a href="https://www.allcollarrecruiting.com/">
-            <img src="logo-removebg-preview.png"
+            <img src="{% static 'images/logo-removebg-preview.png'%}"
                 style="width: 32%; aspect-ratio: 2/2 ; object-fit: contain; margin: 5px;" alt="All Collar Recruiting">
         </a>
     </nav>
@@ -39,7 +40,7 @@
                         <h1
                             style="text-align: center; margin-bottom: 35px !important; margin: 0; letter-spacing: .2rem;">
                             Jobs on Indeed</h1>
-                        <form class="">
+                        <form class="" action="/" method="POST">
                             <h3 style="color: #000;">Enter Job</h3>
                             <input class="form-control searchbox" style="color: #000; padding: 10px 15px;" type="search"
                                 placeholder="Job Title" aria-label="Search">
