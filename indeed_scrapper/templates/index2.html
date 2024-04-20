@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <nav class="et-hero-tabs">
+        <a href="https://www.allcollarrecruiting.com/">
+            <img src="{% static 'images/logo-removebg-preview.png' %}"
+                style="width: 40%; aspect-ratio: 2/2 ; object-fit: contain; margin: 5px;" alt="All Collar Recruiting">
+        </a>
+    </nav>
+    <div class="container-fluid mt-5 mb-5 d-flex justify-content-center">
+        <div class="container-fluid row">
+            <div class="col-lg-5 left-main-cont rounded-left">
+                <div class="container-fluid text-center mb-5 mt-3">
+                    <h1>Indeed</h1>
+                </div>
+                <div class="container-fluid p-0">
+                    <form action="">
+                        <div class="container-fluid d-flex justify-content-left flex-column mb-4">
+                            <label for="job_title" class="mb-2">
+                                Enter the job
+                            </label>
+                            <input class="form-control searchbox mb-2" style="padding: 10px 15px;" type="text"
+                                placeholder="Job title">
+                        </div>
+
+                        <div class="container-fluid d-flex justify-content-left flex-column mb-4">
+                            <label for="job_title" class="mb-2">
+                                Add Company
+                            </label>
+                            <input class="form-control searchbox mb-2" style="padding: 10px 15px;" type="text"
+                                placeholder="Company">
+                        </div>
+
+                        <div class="container-fluid">
+                            <div class="container-fluid header p-0">
+                                <h2>Filters</h2>
+                            </div>
+
+                            <div class="container-fluid filter-list-div bg-white p-3 rounded">
+
+                                <div class="row">
+
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                            <option value="" selected> Date Job posted</option>
+                                            <option value="Last 24 hours">Last 24 hours</option>
+                                            <option value="Last 3 days">Last 3 days</option>
+                                            <option value="Last 7 days">Last 7 days</option>
+                                            <option value="Last 14 days">Last 14 days</option>
+                                            <option value="Last 30 days">Last 30 days</option>
+                                            <option value="Over 30 days">Over 30 days</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                            <option value="" selected>Job Type</option>
+                                            <option value="Full time">Full time</option>
+                                            <option value="Part time">Part time</option>
+                                            <option value="Contract">Contract</option>
+                                            <option value="Temporary">Temporary</option>
+                                            <option value="Remote">Remote</option>
+                                            <option value="Hybrid">Hybrid</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                            <option value="" selected>Select State</option>
+                                            <option value="Alabama">Alabama</option>
+                                            <option value="Alaska">Alaska</option>
+                                            <option value="Arizona">Arizona</option>
+                                            <option value="Arkansas">Arkansas</option>
+                                            <option value="California">California</option>
+                                            <option value="Colorado">Colorado</option>
+                                            <option value="Connecticut">Connecticut</option>
+                                            <option value="Delaware">Delaware</option>
+                                            <option value="Florida">Florida</option>
+                                            <option value="Georgia">Georgia</option>
+                                            <option value="Hawaii">Hawaii</option>
+                                            <option value="Idaho">Idaho</option>
+                                            <option value="Illinois">Illinois</option>
+                                            <option value="Indiana">Indiana</option>
+                                            <option value="Iowa">Iowa</option>
+                                            <option value="Kansas">Kansas</option>
+                                            <option value="Kentucky">Kentucky</option>
+                                            <option value="Louisiana">Louisiana</option>
+                                            <option value="Maine">Maine</option>
+                                            <option value="Maryland">Maryland</option>
+                                            <option value="Massachusetts">Massachusetts</option>
+                                            <option value="Michigan">Michigan</option>
+                                            <option value="Minnesota">Minnesota</option>
+                                            <option value="Mississippi">Mississippi</option>
+                                            <option value="Missouri">Missouri</option>
+                                            <option value="Montana">Montana</option>
+                                            <option value="Nebraska">Nebraska</option>
+                                            <option value="Nevada">Nevada</option>
+                                            <option value="New Hampshire">New Hampshire</option>
+                                            <option value="New Jersey">New Jersey</option>
+                                            <option value="New Mexico">New Mexico</option>
+                                            <option value="New York">New York</option>
+                                            <option value="North Carolina">North Carolina</option>
+                                            <option value="North Dakota">North Dakota</option>
+                                            <option value="Ohio">Ohio</option>
+                                            <option value="Oklahoma">Oklahoma</option>
+                                            <option value="Oregon">Oregon</option>
+                                            <option value="Pennsylvania">Pennsylvania</option>
+                                            <option value="Rhode Island">Rhode Island</option>
+                                            <option value="South Carolina">South Carolina</option>
+                                            <option value="South Dakota">South Dakota</option>
+                                            <option value="Tennessee">Tennessee</option>
+                                            <option value="Texas">Texas</option>
+                                            <option value="Utah">Utah</option>
+                                            <option value="Vermont">Vermont</option>
+                                            <option value="Virginia">Virginia</option>
+                                            <option value="Washington">Washington</option>
+                                            <option value="West Virginia">West Virginia</option>
+                                            <option value="Wisconsin">Wisconsin</option>
+                                            <option value="Wyoming">Wyoming</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                            <option value="" selected>Posted By
+                                            </option>
+                                            <option value="Employer">Employer</option>
+                                            <option value="Staffing agency">Staffing agency</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                            <option value="" selected>Experience level</option>
+                                            <option value="Entry level">Entry level</option>
+                                            <option value="Mid level">Mid level</option>
+                                            <option value="Senior level">Senior level</option>
+                                            <option value="No experience required">No experience required</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                            <option value="" selected>Education</option>
+                                            <option value="High school degree">High school degree</option>
+                                            <option value="Associate degree">Associate degree</option>
+                                            <option value="Bachelors degree">Bachelors degree</option>
+                                            <option value="Masters degree">Masters degree</option>
+                                            <option value="Doctoral degree">Doctoral degree</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="rounded mt-3 mb-3" style="border: 1px solid rgb(121, 121, 121);">
+                                    <div class="container-fluid d-flex justify-content-left flex-column mt-4 mb-4">
+                                        <label for="job_title" class="mb-2 d-flex">
+                                            Minmum Salary:
+                                            <div id="manimum_range">$ 0</div>
+                                        </label>
+                                        <input class="form-range mb-2" value="0" max="100000" min="0" type="range"
+                                            placeholder="Company" oninput="setminRange(this.value)">
+                                    </div>
+
+                                    <div class="container-fluid d-flex justify-content-left flex-column mt-4 mb-4">
+                                        <label for="job_title" class="mb-2 d-flex">
+                                            Maximum Salary:
+                                            <div id="maximum_range">$ 0</div>
+                                        </label>
+                                        <input class="form-range mb-2" value="0" max="100000" min="0" type="range"
+                                            placeholder="Company" oninput="setmaxRange(this.value)">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 p-3 custom-select">
+                                    <select class="form-select custom-dropdown py-3">
+                                        <option value="" selected>Keywords</option>
+                                        <option value="urgently hiring">urgently hiring</option>
+                                        <option value="hiring multiple candidates">hiring multiple candidates</option>
+                                        <option value="bonus">bonus</option>
+                                    </select>
+                                </div>
+
+                                <div class="container-fluid d-flex justify-content-left flex-column mb-4">
+                                    <label for="job_title" class="mb-2">
+                                        Enter More Keywords
+                                    </label>
+                                    <textarea class="form-control searchbox mb-2" type="text"
+                                        placeholder="Keywords"></textarea>
+                                </div>
+
+                                <div class="container-fluid d-flex justify-content-left flex-column mb-4">
+                                    <label for="job_title" class="mb-2">
+                                        Add Exclusions
+                                    </label>
+                                    <textarea class="form-control searchbox mb-2" type="text"
+                                        placeholder="Exclude"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="search-button" onclick="showLoader();">
+                                <div>
+                                    <a href="#" id="searchButton">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        Search
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-lg-7 right-main-cont rounded-right" style="text-align: left;">
+                <div class="container-fluid mt-3">
+                    <h1>Results</h1>
+                </div>
+                <div class="container-fluid table-cont mt-5 p-4" style="overflow: scroll;">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Job Posted</th>
+                                <th scope="col">Job Ttile</th>
+                                <th scope="col">Indeed Link</th>
+                                <th scope="col">Company</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Pay</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Experience</th>
+                                <th scope="col">Education</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-button d-flex justify-content-end" onclick="showLoader();">
+                    <div>
+                        <a href="#" id="d-button">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            Download CSV
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function setmaxRange(value) {
+            document.getElementById("maximum_range").innerHTML = "$" + value
+        }
+        function setminRange(value) {
+            document.getElementById("manimum_range").innerHTML = "$" + value
+        }
+        function showLoader() {
+            document.getElementById("loaderContainer").style.display = "flex";
+        }
+    </script>
+
+    <script>
+        var x, i, j, l, ll, selElmnt, a, b, c;
+        /*look for any elements with the class "custom-select":*/
+        x = document.getElementsByClassName("custom-select");
+        l = x.length;
+        for (i = 0; i < l; i++) {
+            selElmnt = x[i].getElementsByTagName("select")[0];
+            ll = selElmnt.length;
+            /*for each element, create a new DIV that will act as the selected item:*/
+            a = document.createElement("DIV");
+            a.setAttribute("class", "select-selected");
+            a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+            x[i].appendChild(a);
+            /*for each element, create a new DIV that will contain the option list:*/
+            b = document.createElement("DIV");
+            b.setAttribute("class", "select-items select-hide");
+            for (j = 1; j < ll; j++) {
+                /*for each option in the original select element,
+                create a new DIV that will act as an option item:*/
+                c = document.createElement("DIV");
+                c.innerHTML = selElmnt.options[j].innerHTML;
+                c.addEventListener("click", function (e) {
+                    /*when an item is clicked, update the original select box,
+                    and the selected item:*/
+                    var y, i, k, s, h, sl, yl;
+                    s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                    sl = s.length;
+                    h = this.parentNode.previousSibling;
+                    for (i = 0; i < sl; i++) {
+                        if (s.options[i].innerHTML == this.innerHTML) {
+                            s.selectedIndex = i;
+                            h.innerHTML = this.innerHTML;
+                            y = this.parentNode.getElementsByClassName("same-as-selected");
+                            yl = y.length;
+                            for (k = 0; k < yl; k++) {
+                                y[k].removeAttribute("class");
+                            }
+                            this.setAttribute("class", "same-as-selected");
+                            break;
+                        }
+                    }
+                    h.click();
+                });
+                b.appendChild(c);
+            }
+            x[i].appendChild(b);
+            a.addEventListener("click", function (e) {
+                /*when the select box is clicked, close any other select boxes,
+                and open/close the current select box:*/
+                e.stopPropagation();
+                closeAllSelect(this);
+                this.nextSibling.classList.toggle("select-hide");
+                this.classList.toggle("select-arrow-active");
+            });
+        }
+        function closeAllSelect(elmnt) {
+            /*a function that will close all select boxes in the document,
+            except the current select box:*/
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+                if (elmnt == y[i]) {
+                    arrNo.push(i)
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (i = 0; i < xl; i++) {
+                if (arrNo.indexOf(i)) {
+                    x[i].classList.add("select-hide");
+                }
+            }
+        }
+        /*if the user clicks anywhere outside the select box,
+        then close all select boxes:*/
+        document.addEventListener("click", closeAllSelect);
+    </script>
+
+
+</body>
+
+</html>
