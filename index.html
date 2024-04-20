@@ -58,12 +58,13 @@
                                 Date Job posted
                             </button>
                             <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Last 24 hours</a></li>
-                                <li><a class="dropdown-item" href="#">Last 3 days</a></li>
-                                <li><a class="dropdown-item" href="#">Last 7 days</a></li>
-                                <li><a class="dropdown-item" href="#">Last 14 days</a></li>
-                                <li><a class="dropdown-item" href="#">Last 30 days</a></li>
-                                <li><a class="dropdown-item" href="#">Over 30 days</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">(Not Specific)</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Last 24 hours</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Last 3 days</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Last 7 days</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Last 14 days</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Last 30 days</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Over 30 days</a></li>
                             </ul>
                         </div>
                         <div class="dropdown custom-dropdown">
@@ -72,41 +73,43 @@
                                 Job type
                             </button>
                             <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Full time</a></li>
-                                <li><a class="dropdown-item" href="#">Part time</a></li>
-                                <li><a class="dropdown-item" href="#">Contract</a></li>
-                                <li><a class="dropdown-item" href="#">Temporary</a></li>
-                                <li><a class="dropdown-item" href="#">Remote</a></li>
-                                <li><a class="dropdown-item" href="#">Hybrid</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">(Not Specific)</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Full time</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Part time</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Contract</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Temporary</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Remote</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Hybrid</a></li>
                             </ul>
                         </div>
                         <div class="dropdown custom-dropdown">
                             <button class="btn btn-secondary dropdown-toggle custom-dropdown-toggle" type="button"
                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Select State
-                            </button>
+                            </button>           
                             <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1"
                                 style="height: 200px; overflow-y: auto;">
-                                <li><a value="AL">Alabama</a></li>
-                                <li><a value="AK">Alaska</a></li>
-                                <li><a value="AZ">Arizona</a></li>
-                                <li><a value="AR">Arkansas</a></li>
-                                <li><a value="CA">California</a></li>
-                                <li><a value="CO">Colorado</a></li>
-                                <li><a value="CT">Connecticut</a></li>
-                                <li><a value="DE">Delaware</a></li>
-                                <li><a value="FL">Florida</a></li>
-                                <li><a value="GA">Georgia</a></li>
-                                <li><a value="HI">Hawaii</a></li>
-                                <li><a value="ID">Idaho</a></li>
-                                <li><a value="IL">Illinois</a></li>
-                                <li><a value="IN">Indiana</a></li>
-                                <li><a value="IA">Iowa</a></li>
-                                <li><a value="KS">Kansas</a></li>
-                                <li><a value="KY">Kentucky</a></li>
-                                <li><a value="LA">Louisiana</a></li>
-                                <li><a value="ME">Maine</a></li>
-                                <li><a value="MD">Maryland</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">(Not Specific)</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Alabama</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Alaska</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Arizona</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Arkansas</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">California</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Colorado</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Connecticut</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Delaware</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Florida</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Georgia</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Hawaii</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Idaho</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Illinois</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Indiana</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Iowa</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)"value="KS">Kansas</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Kentucky</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Louisiana</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Maine</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Maryland</a></li>
                                 <li><a value="MA">Massachusetts</a></li>
                                 <li><a value="MI">Michigan</a></li>
                                 <li><a value="MN">Minnesota</a></li>
@@ -146,8 +149,9 @@
                                 Posted By
                             </button>
                             <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Employer</a></li>
-                                <li><a class="dropdown-item" href="#">Staffing agency</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">(Not Specific)</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Employer</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Staffing agency</a></li>
                             </ul>
                         </div>
                         <label for="minimum" class="form-label">Minimum Salary</label>
@@ -162,10 +166,11 @@
                                 Experience level
                             </button>
                             <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Entry level</a></li>
-                                <li><a class="dropdown-item" href="#">Mid level</a></li>
-                                <li><a class="dropdown-item" href="#">Senior level</a></li>
-                                <li><a class="dropdown-item" href="#">No experience required</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">(Not Specific)</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Entry level</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Mid level</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Senior level</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">No experience required</a></li>
                             </ul>
                         </div>
                         <div class="dropdown custom-dropdown">
@@ -174,11 +179,12 @@
                                 Education
                             </button>
                             <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">High school degree</a></li>
-                                <li><a class="dropdown-item" href="#">Associate degree</a></li>
-                                <li><a class="dropdown-item" href="#">Bachelors degree</a></li>
-                                <li><a class="dropdown-item" href="#">Masters degree</a></li>
-                                <li><a class="dropdown-item" href="#">Doctoral degree</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">(Not Specific)</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">High school degree</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Associate degree</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Bachelors degree</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Masters degree</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">Doctoral degree</a></li>
                             </ul>
                         </div>
                         <div class="dropdown custom-dropdown">
@@ -187,9 +193,10 @@
                                 Keywords
                             </button>
                             <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">urgently hiring</a></li>
-                                <li><a class="dropdown-item" href="#">hiring multiple candidates</a></li>
-                                <li><a class="dropdown-item" href="#">bonus</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">(Not Specific)</a></li>
+                                <li><a class="dropdown-item"onclick="selectOption(this)">urgently hiring</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">hiring multiple candidates</a></li>
+                                <li><a class="dropdown-item" onclick="selectOption(this)">bonus</a></li>
 
                             </ul>
                         </div>
@@ -247,6 +254,15 @@
             </div>
         </div>
     </div>
+<script>
+
+    function selectOption(option) {
+    var selectedOption = option.textContent;
+    var dropdownToggle = document.getElementById("dropdownMenuButton1");
+    dropdownToggle.textContent = selectedOption;
+    }
+    
+    </script>
 </body>
 
 </html>

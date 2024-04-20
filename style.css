@@ -148,7 +148,6 @@ body {
 }
 
 .custom-dropdown-menu {
-  display: none;
   position: absolute;
   background-color: #fffcfc;
   min-width: 120px;
