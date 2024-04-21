@@ -11,7 +11,8 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
-    <title>Document</title>
+    <script src="{% static 'js/script.js' %}"></script>
+    <title>Indeed</title>
 </head>
 
 <body>
@@ -36,12 +37,12 @@
                     <h1>Indeed</h1>
                 </div>
                 <div class="container-fluid p-0">
-                    <form action="">
+                    <form action="" onsubmit="sendRequest()">
                         <div class="container-fluid d-flex justify-content-left flex-column mb-4">
                             <label for="job_title" class="mb-2">
                                 Enter the job
                             </label>
-                            <input class="form-control searchbox mb-2" style="padding: 10px 15px;" type="text"
+                            <input class="form-control searchbox mb-2" name="job_title" style="padding: 10px 15px;" type="text"
                                 placeholder="Job title">
                         </div>
 
@@ -49,7 +50,7 @@
                             <label for="job_title" class="mb-2">
                                 Add Company
                             </label>
-                            <input class="form-control searchbox mb-2" style="padding: 10px 15px;" type="text"
+                            <input class="form-control searchbox mb-2" name="company" style="padding: 10px 15px;" type="text"
                                 placeholder="Company">
                         </div>
 
@@ -63,7 +64,7 @@
                                 <div class="row">
 
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                        <select class="form-select custom-dropdown py-3 " name="job_date" id="">
                                             <option value="" selected> Date Job posted</option>
                                             <option value="Last 24 hours">Last 24 hours</option>
                                             <option value="Last 3 days">Last 3 days</option>
@@ -75,9 +76,9 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                        <select class="form-select custom-dropdown py-3 " name="job_type" id="">
                                             <option value="" selected>Job Type</option>
-                                            <option value="Full time">Full time</option>
+                                            <option value="Full-time">Full time</option>
                                             <option value="Part time">Part time</option>
                                             <option value="Contract">Contract</option>
                                             <option value="Temporary">Temporary</option>
@@ -86,7 +87,7 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                        <select class="form-select custom-dropdown py-3 " name="state" id="">
                                             <option value="" selected>Select State</option>
                                             <option value="Alabama">Alabama</option>
                                             <option value="Alaska">Alaska</option>
@@ -141,7 +142,7 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                        <select class="form-select custom-dropdown py-3 " name="posted_by" id="">
                                             <option value="" selected>Posted By
                                             </option>
                                             <option value="Employer">Employer</option>
@@ -150,7 +151,7 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                        <select class="form-select custom-dropdown py-3 " name="experience_levele" id="">
                                             <option value="" selected>Experience level</option>
                                             <option value="Entry level">Entry level</option>
                                             <option value="Mid level">Mid level</option>
@@ -159,7 +160,7 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="    " id="">
+                                        <select class="form-select custom-dropdown py-3 " name="education" id="">
                                             <option value="" selected>Education</option>
                                             <option value="High school degree">High school degree</option>
                                             <option value="Associate degree">Associate degree</option>
@@ -176,7 +177,7 @@
                                             Minmum Salary:
                                             <div id="manimum_range">$ 0</div>
                                         </label>
-                                        <input class="form-range mb-2" value="0" max="100000" min="0" type="range"
+                                        <input class="form-range mb-2" name="max_salary"  max="100000" min="0" type="range"
                                             placeholder="Company" oninput="setminRange(this.value)">
                                     </div>
 
@@ -185,12 +186,12 @@
                                             Maximum Salary:
                                             <div id="maximum_range">$ 0</div>
                                         </label>
-                                        <input class="form-range mb-2" value="0" max="100000" min="0" type="range"
+                                        <input class="form-range mb-2" name="min_salary"  max="100000" min="0" type="range"
                                             placeholder="Company" oninput="setmaxRange(this.value)">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 p-3 custom-select">
-                                    <select class="form-select custom-dropdown py-3">
+                                    <select class="form-select custom-dropdown py-3" name="keyword">
                                         <option value="" selected>Keywords</option>
                                         <option value="urgently hiring">urgently hiring</option>
                                         <option value="hiring multiple candidates">hiring multiple candidates</option>
@@ -202,7 +203,7 @@
                                     <label for="job_title" class="mb-2">
                                         Enter More Keywords
                                     </label>
-                                    <textarea class="form-control searchbox mb-2" type="text"
+                                    <textarea class="form-control searchbox mb-2" name="more_keywords" type="text"
                                         placeholder="Keywords"></textarea>
                                 </div>
 
@@ -210,20 +211,20 @@
                                     <label for="job_title" class="mb-2">
                                         Add Exclusions
                                     </label>
-                                    <textarea class="form-control searchbox mb-2" type="text"
+                                    <textarea class="form-control searchbox mb-2" name="exclusives" type="text"
                                         placeholder="Exclude"></textarea>
                                 </div>
 
                             </div>
-                            <div class="search-button" onclick="showLoader();">
+                            <div class="search-button" onclick="sendRequest();">
                                 <div>
-                                    <a href="#" id="searchButton">
+                                    <button href="#" id="searchButton">
                                         <span></span>
                                         <span></span>
                                         <span></span>
                                         <span></span>
                                         Search
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -237,7 +238,7 @@
                 </div>
                 <div class="container-fluid table-cont mt-5 p-4" style="overflow: scroll;">
 
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="jobDetailsTable">
                         <thead>
                             <tr>
                                 <th scope="col">Job Posted</th>
@@ -252,35 +253,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
+                           
                         </tbody>
                     </table>
                 </div>
                 <div class="d-button d-flex justify-content-end" onclick="showLoader();">
                     <div>
-                        <a href="#" id="d-button">
+                        <button  type="submit" id="d-button">
                             <span></span>
                             <span></span>
                             <span></span>
                             <span></span>
                             Download CSV
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -299,29 +284,88 @@
     </script>
 
     <script>
+        function populateData(job_details){
+            const table = document.getElementById('jobDetailsTable');
+
+            job_details.forEach(job => {
+                // Create a new table row
+                const row = table.insertRow();
+
+                // Insert cells for each job detail
+                const postedAtCell = row.insertCell();
+                const jobTitleCell = row.insertCell();
+                const companyLocationCell = row.insertCell();
+                const jobTypeCell = row.insertCell();
+
+                // Set the content of each cell
+                postedAtCell.textContent = job.posted_at;
+                jobTitleCell.textContent = job.job_title;
+                companyLocationCell.textContent = job.company_link;
+                jobTypeCell.textContent = job.job_type;
+                // Add more cells for other job details as needed
+            });
+
+        }
+
+        function sendRequest(){
+       
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(form); 
+            const jsonObject = {};
+            formData.forEach(function (value, key) {
+                jsonObject[key] = value;
+            });
+            console.log(jsonObject);
+
+            const url = 'http://127.0.0.1:8000/job_scrapper/'; 
+
+            // Send POST request with JSON body
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonObject)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                populateData(data.job_details)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        }
+    </script>
+
+    <script>
         var x, i, j, l, ll, selElmnt, a, b, c;
-        /*look for any elements with the class "custom-select":*/
         x = document.getElementsByClassName("custom-select");
         l = x.length;
         for (i = 0; i < l; i++) {
             selElmnt = x[i].getElementsByTagName("select")[0];
             ll = selElmnt.length;
-            /*for each element, create a new DIV that will act as the selected item:*/
             a = document.createElement("DIV");
             a.setAttribute("class", "select-selected");
             a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
             x[i].appendChild(a);
-            /*for each element, create a new DIV that will contain the option list:*/
             b = document.createElement("DIV");
             b.setAttribute("class", "select-items select-hide");
             for (j = 1; j < ll; j++) {
-                /*for each option in the original select element,
-                create a new DIV that will act as an option item:*/
                 c = document.createElement("DIV");
                 c.innerHTML = selElmnt.options[j].innerHTML;
                 c.addEventListener("click", function (e) {
-                    /*when an item is clicked, update the original select box,
-                    and the selected item:*/
                     var y, i, k, s, h, sl, yl;
                     s = this.parentNode.parentNode.getElementsByTagName("select")[0];
                     sl = s.length;
@@ -345,8 +389,6 @@
             }
             x[i].appendChild(b);
             a.addEventListener("click", function (e) {
-                /*when the select box is clicked, close any other select boxes,
-                and open/close the current select box:*/
                 e.stopPropagation();
                 closeAllSelect(this);
                 this.nextSibling.classList.toggle("select-hide");
@@ -354,8 +396,6 @@
             });
         }
         function closeAllSelect(elmnt) {
-            /*a function that will close all select boxes in the document,
-            except the current select box:*/
             var x, y, i, xl, yl, arrNo = [];
             x = document.getElementsByClassName("select-items");
             y = document.getElementsByClassName("select-selected");
@@ -374,12 +414,8 @@
                 }
             }
         }
-        /*if the user clicks anywhere outside the select box,
-        then close all select boxes:*/
         document.addEventListener("click", closeAllSelect);
     </script>
-
-
 </body>
 
 </html>

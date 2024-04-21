@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path("app/", include("scrapper.urls")),
+    path("", include("scrapper.urls")),
     path('admin/', admin.site.urls),
 ]

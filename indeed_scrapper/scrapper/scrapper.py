@@ -15,6 +15,7 @@ class IndeedJobScraper:
         self.search_term = search_term
         self.keyword = ""
         self.exclusives = ""
+        self.job_type = ""
 
     def navigate_to_indeed(self):
         self.driver.get("https://www.indeed.com/")
@@ -54,9 +55,11 @@ class IndeedJobScraper:
                             a_tags = li.find_elements(By.TAG_NAME, "a")
 
                             for a_tag in a_tags:
-                                if filter_value.lower() in a_tag.text.lower():
-                                    href = a_tag.get_attribute("href")
-                                    self.driver.get(href)
+                                print("Filter VAlues")
+                                if filter_value:
+                                    if filter_value.lower() in a_tag.text.lower():
+                                        href = a_tag.get_attribute("href")
+                                        self.driver.get(href)
                             time.sleep(random.randint(1, 2))
             except Exception as e:
                 print("Error occurred:", e)
@@ -65,7 +68,7 @@ class IndeedJobScraper:
         while True:
             job_cards_div = self.driver.find_element(By.ID, "mosaic-provider-jobcards")
             job_list_items = job_cards_div.find_elements(By.CLASS_NAME, "css-5lfssm ")
-
+            scraped_jobs = []
             for item in job_list_items:
                 try:
                     if self.search_term.lower() in item.text.lower():
@@ -82,6 +85,17 @@ class IndeedJobScraper:
                     if (self.keyword.lower() in job_description.lower() or self.keyword.lower() in job_cards_div.text.lower()):
                         if len(self.exclusives) > 0:
                             if (self.exclusives.lower() not in job_cards_div.text.lower()) and (self.exclusives.lower() not in job_description.lower()):
+                                scraped_jobs.append({
+                                    'posted_at': posted_at,
+                                    'job_title': job_title,
+                                    'company_link': company_link,
+                                    'company_location': company_location,
+                                    'job_type': job_type,
+                                    'job_salary': job_salary,
+                                    'job_exp_level': job_exp_level,
+                                    'job_education_level': job_education_level,
+                                    'job_description': job_description
+                                })
                                 self.write_to_csv(
                                     posted_at, 
                                     job_title, 
@@ -94,6 +108,17 @@ class IndeedJobScraper:
                                     job_description
                                     )
                         else:
+                            scraped_jobs.append({  
+                                    'posted_at': posted_at,
+                                    'job_title': job_title,
+                                    'company_link': company_link,
+                                    'company_location': company_location,
+                                    'job_type': job_type,
+                                    'job_salary': job_salary,
+                                    'job_exp_level': job_exp_level,
+                                    'job_education_level': job_education_level,
+                                    'job_description': job_description
+                                })
                             self.write_to_csv(
                                     posted_at, 
                                     job_title, 
@@ -109,10 +134,15 @@ class IndeedJobScraper:
                 except Exception as e:
                     print("Exception occurred: ", e)
                     continue
+            try:
+                next_page_button = self.wait.until(
+                    EC.presence_of_element_located((By.XPATH, '//a[@data-testid="pagination-page-next"]')))
+                next_page_button.click()
+            except Exception as e:
+                print("No further jobs", e)
+                break
 
-            next_page_button = self.wait.until(
-                EC.presence_of_element_located((By.XPATH, '//a[@data-testid="pagination-page-next"]')))
-            next_page_button.click()
+        return scraped_jobs 
 
     def extract_posted_at(self, item):
         posted_at_items = item.text.split("\n")
@@ -166,10 +196,14 @@ class IndeedJobScraper:
         try:
             job_details_section = self.wait.until(EC.presence_of_element_located((By.ID, 'jobDetailsSection')))
             job_type_div = job_details_section.find_elements(By.CLASS_NAME, 'js-match-insights-provider-e6s05i')
+            if not job_type:
+                job_type = self.job_type
             for div in job_type_div:
                 if "type" in div.text.lower():
                     job_type_text = div.find_element(By.CLASS_NAME, "js-match-insights-provider-1o7r14h")
                     job_type = job_type_text.text
+                else:
+                    job_type = self.job_type
         except (NoSuchElementException, TimeoutException):
             pass
 
@@ -220,24 +254,3 @@ class IndeedJobScraper:
     def close_driver(self):
         self.driver.quit()
 
-
-if __name__ == "__main__":
-    job_scraper = IndeedJobScraper("Python developer")
-    job_scraper.navigate_to_indeed()
-    job_scraper.search_jobs()
-    filters = {
-        # "date": "last 24 hours",
-        # "remote": "remote",
-        # "pay": "$80,000+",
-        "job type": "full-time",
-        # "programming language": "python",
-        "location": "lahore",
-        "company": "itechX",
-        "job language": "english",
-        # "keyword": "urgently hiring",
-        # "exclusives": "bonus"
-    }
-    # filters = {}
-    job_scraper.apply_filters(filters)
-    job_scraper.scrape_jobs()
-    job_scraper.close_driver()
