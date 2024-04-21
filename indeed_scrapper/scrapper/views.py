@@ -24,7 +24,9 @@ class ScraperJobsVew(APIView):
         company = request.data.get('company', '')
         job_lang = request.data.get('job_language', '')
         keyword  = request.data.get('keyword', '')
+        more_keywords = request.data.get("more_keywords", "")
         exclusives = request.data.get('exclusives', '')
+        posted_by = request.date.get("posted_by", "")
 
 
         filters = {}
@@ -36,6 +38,8 @@ class ScraperJobsVew(APIView):
             
             if date:
                 filters["date"] = date
+            if posted_by:
+                filters["posted_by"] = posted_by
             if pay:
                 filters["pay"] = pay
             if job_type:
@@ -49,7 +53,11 @@ class ScraperJobsVew(APIView):
             if keyword:
                 filters["keyword"] = keyword
             if exclusives:
+                exclusives = exclusives.split(",")
                 filters["exclusives"] = exclusives
+            if more_keywords:
+                 more_keywords = more_keywords.split(",")
+                 filters["more_keywords"] = more_keywords
             
 
             try:

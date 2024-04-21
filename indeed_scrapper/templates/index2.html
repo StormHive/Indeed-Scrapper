@@ -79,7 +79,7 @@
                                         <select class="form-select custom-dropdown py-3 " name="job_type" id="">
                                             <option value="" selected>Job Type</option>
                                             <option value="Full-time">Full time</option>
-                                            <option value="Part time">Part time</option>
+                                            <option value="Part-time">Part time</option>
                                             <option value="Contract">Contract</option>
                                             <option value="Temporary">Temporary</option>
                                             <option value="Remote">Remote</option>
@@ -333,7 +333,6 @@
 
                 const url = 'http://127.0.0.1:8000/job_scrapper/';
 
-                // Send POST request with JSON body
                 document.getElementById("loaderContainer").style.display = "flex";
                 fetch(url, {
                     method: 'POST',
