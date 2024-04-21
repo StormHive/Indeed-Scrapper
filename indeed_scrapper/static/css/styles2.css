@@ -425,3 +425,7 @@ label {
     bottom: 100%;
   }
 }
+
+table{
+  width: max-content !important;
+}

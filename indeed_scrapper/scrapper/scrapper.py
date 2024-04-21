@@ -16,6 +16,8 @@ class IndeedJobScraper:
         self.keyword = ""
         self.exclusives = ""
         self.job_type = ""
+        self.scraped_jobs = []
+        self.job_title = ""
 
     def navigate_to_indeed(self):
         self.driver.get("https://www.indeed.com/")
@@ -36,11 +38,13 @@ class IndeedJobScraper:
                     close_btn = modal_.find_element(By.TAG_NAME, "button")
                     close_btn.click()
                 except Exception as e:
-                    print("Exception modal not found: ",)
+                    print("Exception modal not found",)
                 if filter_name == "keyword":
                     self.keyword = filter_value
                 elif filter_name == "exclusives":
                     self.exclusives = filter_value
+                elif filter_name == "job_type":
+                    self.job_type = filter_value
                 filter_element = self.wait.until(
                     EC.presence_of_element_located((By.ID, "MosaicProviderRichSearchDaemon")))
                 filter_ul_elements = filter_element.find_elements(By.TAG_NAME, "ul")
@@ -66,14 +70,29 @@ class IndeedJobScraper:
 
     def scrape_jobs(self):
         while True:
+            try:
+                modal_ = self.driver.find_element(By.XPATH, '//div[@role="dialog"]')
+                close_btn = modal_.find_element(By.TAG_NAME, "button")
+                close_btn.click()
+            except Exception as e:
+                print("Exception modal not found: ",)
             job_cards_div = self.driver.find_element(By.ID, "mosaic-provider-jobcards")
             job_list_items = job_cards_div.find_elements(By.CLASS_NAME, "css-5lfssm ")
-            scraped_jobs = []
+            
             for item in job_list_items:
                 try:
                     if self.search_term.lower() in item.text.lower():
                         self.driver.execute_script("arguments[0].scrollIntoView();", item)
                         item.click()
+                        try:
+                            self.job_type = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(By.CLASS_NAME, "css-1cvo3fd").text
+                        except Exception as e:
+                            print(e)
+                        try:
+                            self.job_title = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(By.CLASS_NAME, "jobTitle").text
+                        except Exception as e:
+                            print(e)
+
                         time.sleep(random.randint(1, 2))
                     else:
                         continue
@@ -82,10 +101,19 @@ class IndeedJobScraper:
                     except Exception as e:
                         print("Error occurred:", e)
                     job_title, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description = self.extract_job_details()
+                    if not job_type:
+                        
+                        
+                        job_type = self.job_type
+                    if not job_title:
+                        try:
+                            job_title = self.driver.find_element(By.CLASS_NAME, "jobsearch-JobInfoHeader-title")
+                        except Exception as e:
+                            job_title = self.search_term
                     if (self.keyword.lower() in job_description.lower() or self.keyword.lower() in job_cards_div.text.lower()):
                         if len(self.exclusives) > 0:
                             if (self.exclusives.lower() not in job_cards_div.text.lower()) and (self.exclusives.lower() not in job_description.lower()):
-                                scraped_jobs.append({
+                                self.scraped_jobs.append({
                                     'posted_at': posted_at,
                                     'job_title': job_title,
                                     'company_link': company_link,
@@ -108,7 +136,7 @@ class IndeedJobScraper:
                                     job_description
                                     )
                         else:
-                            scraped_jobs.append({  
+                            self.scraped_jobs.append({  
                                     'posted_at': posted_at,
                                     'job_title': job_title,
                                     'company_link': company_link,
@@ -142,13 +170,16 @@ class IndeedJobScraper:
                 print("No further jobs", e)
                 break
 
-        return scraped_jobs 
+        return self.scraped_jobs 
 
     def extract_posted_at(self, item):
         posted_at_items = item.text.split("\n")
         for item in posted_at_items:
             if 'day' in item or "just posted" in item or "day" in item:
-                return item[:-8]
+                if "more" in item.lower():
+                    return item[:-8]
+                else:
+                    return item
 
     def extract_job_details(self):
         time.sleep(random.randint(1, 2))
@@ -162,7 +193,8 @@ class IndeedJobScraper:
         job_description = ""
 
         try:
-            job_title_text_header = self.driver.find_element(By.CLASS_NAME,
+            if not self.job_title:
+                self.job_title = self.driver.find_element(By.CLASS_NAME,
                                                              'jobsearch-JobInfoHeader-title-container').text
         except NoSuchElementException:
             pass
@@ -194,16 +226,17 @@ class IndeedJobScraper:
             
 
         try:
-            job_details_section = self.wait.until(EC.presence_of_element_located((By.ID, 'jobDetailsSection')))
-            job_type_div = job_details_section.find_elements(By.CLASS_NAME, 'js-match-insights-provider-e6s05i')
-            if not job_type:
-                job_type = self.job_type
-            for div in job_type_div:
-                if "type" in div.text.lower():
-                    job_type_text = div.find_element(By.CLASS_NAME, "js-match-insights-provider-1o7r14h")
-                    job_type = job_type_text.text
-                else:
-                    job_type = self.job_type
+            if not self.job_type:
+                job_details_section = self.wait.until(EC.presence_of_element_located((By.ID, 'jobDetailsSection')))
+                job_type_div = job_details_section.find_elements(By.CLASS_NAME, 'js-match-insights-provider-e6s05i')
+                if not job_type:
+                    self.job_type = self.job_type
+                for div in job_type_div:
+                    if "type" in div.text.lower():
+                        job_type_text = div.find_element(By.CLASS_NAME, "js-match-insights-provider-1o7r14h")
+                        self.job_type = job_type_text.text
+                    else:
+                        self.job_type = self.job_type
         except (NoSuchElementException, TimeoutException):
             pass
 
@@ -235,7 +268,7 @@ class IndeedJobScraper:
         except (NoSuchElementException, TimeoutException):
             pass
 
-        return job_title_text_header, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description
+        return self.job_title, company_link, company_location, self.job_type, job_salary, job_exp_level, job_education_level, job_description
 
     def write_to_csv(self, posted_at, job_title, company_link, company_location, job_type, job_salary, job_exp_level,
                      job_education_level, job_description):

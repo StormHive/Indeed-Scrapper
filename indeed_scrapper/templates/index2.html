@@ -37,7 +37,7 @@
                     <h1>Indeed</h1>
                 </div>
                 <div class="container-fluid p-0">
-                    <form action="" onsubmit="sendRequest()">
+                    <form action="">
                         <div class="container-fluid d-flex justify-content-left flex-column mb-4">
                             <label for="job_title" class="mb-2">
                                 Enter the job
@@ -177,7 +177,7 @@
                                             Minmum Salary:
                                             <div id="manimum_range">$ 0</div>
                                         </label>
-                                        <input class="form-range mb-2" name="max_salary"  max="100000" min="0" type="range"
+                                        <input class="form-range mb-2" name="max_salary" value="0" max="100000" min="0" type="range"
                                             placeholder="Company" oninput="setminRange(this.value)">
                                     </div>
 
@@ -186,7 +186,7 @@
                                             Maximum Salary:
                                             <div id="maximum_range">$ 0</div>
                                         </label>
-                                        <input class="form-range mb-2" name="min_salary"  max="100000" min="0" type="range"
+                                        <input class="form-range mb-2" name="min_salary" value="0"  max="100000" min="0" type="range"
                                             placeholder="Company" oninput="setmaxRange(this.value)">
                                     </div>
                                 </div>
@@ -244,16 +244,15 @@
                                 <th scope="col">Job Posted</th>
                                 <th scope="col">Job Ttile</th>
                                 <th scope="col">Indeed Link</th>
-                                <th scope="col">Company</th>
-                                <th scope="col">Location</th>
                                 <th scope="col">Pay</th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Experience</th>
                                 <th scope="col">Education</th>
+                                <th scope="col">Location</th>
                             </tr>
                         </thead>
                         <tbody>
-                           
+                          
                         </tbody>
                     </table>
                 </div>
@@ -295,58 +294,79 @@
                 const postedAtCell = row.insertCell();
                 const jobTitleCell = row.insertCell();
                 const companyLocationCell = row.insertCell();
-                const jobTypeCell = row.insertCell();
+                const Pay = row.insertCell();
+                const type = row.insertCell();
+                const exp = row.insertCell();
+                const education = row.insertCell();
+                const companyLocation = row.insertCell();
+                
 
                 // Set the content of each cell
                 postedAtCell.textContent = job.posted_at;
                 jobTitleCell.textContent = job.job_title;
                 companyLocationCell.textContent = job.company_link;
-                jobTypeCell.textContent = job.job_type;
+                type.textContent = job.job_type;
+                Pay.textContent = job.job_salary;
+                exp.textContent = job.job_exp_level;
+                education.textContent = job.job_education_level;
+                companyLocation.textContent = job.company_location;
+
+
                 // Add more cells for other job details as needed
             });
 
         }
 
-        function sendRequest(){
-       
-        const form = document.querySelector('form');
+        function sendRequest() {
+            const form = document.querySelector('form');
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
+            // Define a function to handle form submission
+            function handleSubmit(event) {
+                event.preventDefault();
 
-            const formData = new FormData(form); 
-            const jsonObject = {};
-            formData.forEach(function (value, key) {
-                jsonObject[key] = value;
-            });
-            console.log(jsonObject);
+                const formData = new FormData(form);
+                const jsonObject = {};
+                formData.forEach(function (value, key) {
+                    jsonObject[key] = value;
+                });
+                console.log(jsonObject);
 
-            const url = 'http://127.0.0.1:8000/job_scrapper/'; 
+                const url = 'http://127.0.0.1:8000/job_scrapper/';
 
-            // Send POST request with JSON body
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jsonObject)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-                populateData(data.job_details)
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
+                // Send POST request with JSON body
+                document.getElementById("loaderContainer").style.display = "flex";
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(jsonObject)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                        populateData(data.job_details);
+                        document.getElementById("loaderContainer").style.display = "none";
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById("loaderContainer").style.display = "none";
+                    });
+                    
 
-        }
+                // Remove the event listener to prevent further submissions
+                form.removeEventListener('submit', handleSubmit);
+            }
+
+            // Add event listener to the form
+            form.addEventListener('submit', handleSubmit);
+}
+
     </script>
 
     <script>
