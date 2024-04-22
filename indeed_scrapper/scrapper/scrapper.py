@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import csv
 import time
-import random
+import random, os
 
 
 class IndeedJobScraper:
@@ -13,6 +13,7 @@ class IndeedJobScraper:
         self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 3)
         self.search_term = search_term
+        self.is_remove_file = True
         self.keyword = ""
         self.exclusives = ""
         self.job_type = ""
@@ -24,7 +25,7 @@ class IndeedJobScraper:
         self.scraped_jobs = []
 
     def navigate_to_indeed(self):
-        self.driver.get("https://www.indeed.com/")
+        self.driver.get("https://ca.indeed.com/")
 
     def search_jobs(self):
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
@@ -61,6 +62,7 @@ class IndeedJobScraper:
                             for a_tag in a_tags:
                                 print("Filter VAlues")
                                 if filter_value:
+                                
                                     if filter_value.lower() in a_tag.text.lower():
                                         href = a_tag.get_attribute("href")
                                         self.driver.get(href)
@@ -78,6 +80,8 @@ class IndeedJobScraper:
                 print("Exception modal not found: ",)
 
     def scrape_jobs(self):
+        if not os.path.exists("data"):
+            os.makedirs("data")
         while True:
             try:
                 modal_ = self.driver.find_element(By.XPATH, '//div[@role="dialog"]')
@@ -95,6 +99,7 @@ class IndeedJobScraper:
                         item.click()
                         
                         try:
+                            self.job_type = ""
                             self.job_type = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_elements(By.CLASS_NAME, "css-1cvo3fd")[-1].text
                         except Exception as e:
                             print(e)
@@ -180,10 +185,6 @@ class IndeedJobScraper:
                                     job_description
                                     )
                              
-                       
-                           
-                        
-
                 except Exception as e:
                     print("Exception occurred: ", e)
                     continue
@@ -230,6 +231,7 @@ class IndeedJobScraper:
             pass
 
         try:
+            time.sleep(1)
             company_name_div = self.wait.until(
                 EC.presence_of_element_located((By.XPATH, '//div[@data-testid="inlineHeader-companyName"]')))
             company_link = company_name_div.find_element(By.TAG_NAME, "a").get_attribute("href")
@@ -237,19 +239,29 @@ class IndeedJobScraper:
             pass
 
         try:
+            time.sleep(0.5)
             company_location = self.wait.until(
                 EC.presence_of_element_located((By.XPATH, '//div[@data-testid="inlineHeader-companyLocation"]'))).text
         except TimeoutException:
             pass
 
         try:
-            job_details_section = self.wait.until(EC.presence_of_element_located((By.ID, 'jobDetailsSection')))
-            self.driver.execute_script("arguments[0].scrollIntoView();", job_details_section)
-            job_salary_div = job_details_section.find_elements(By.CLASS_NAME, 'js-match-insights-provider-e6s05i')
-            for div in job_salary_div:
-                if "pay" in div.text.lower():
-                    job_salary = div.find_element(By.CLASS_NAME, 'js-match-insights-provider-1o7r14h')
-                    job_salary = job_salary.text
+            
+            job_salary = self.wait.until(EC.presence_of_element_located((By.ID, 'salaryInfoAndJobType')))
+            job_salary = job_salary.text
+            job_salary = job_salary.split(" - ")
+            if len(job_salary) > 1:
+                job_salary = job_salary[0]
+            if not job_salary:
+                job_details_section = self.wait.until(EC.presence_of_element_located((By.ID, 'jobDetailsSection')))
+                self.driver.execute_script("arguments[0].scrollIntoView();", job_details_section)
+                job_salary_div = job_details_section.find_elements(By.CLASS_NAME, 'js-match-insights-provider-e6s05i')
+                for div in job_salary_div:
+                    if "pay" in div.text.lower():
+                        job_salary = div.find_element(By.CLASS_NAME, 'js-match-insights-provider-1o7r14h')
+                        job_salary = job_salary.text
+            if "time" in job_salary[0].lower():
+                job_salary = ""
             
         except Exception as e:
             print(e)
@@ -275,16 +287,30 @@ class IndeedJobScraper:
             job_description = job_description_div.text
 
             # Extract job experience level
-            if "Entry level" in job_description.lower() or "1 year" in job_description.lower():
+            if "experience" in job_description.lower():
+                job_exp_desc = job_description.split("\n")
+                for desc in job_exp_desc:
+                    if "experience" in desc:
+                        job_exp_level += desc
+            if "Entry level" in job_description.lower() or "1 year" in job_description.lower() or "2 year" in job_description.lower():
                 job_exp_level = "Entry level"
-            elif "Mid level" in job_description.lower():
+            elif "Mid level" in job_description.lower() or "3 year" in job_description.lower() or "4 year" in job_description.lower():
                 job_exp_level = "Mid level"
-            elif "Senior Level" in job_description.lower():
+            elif "Senior Level" in job_description.lower() or "5 year" in job_description.lower() or "5+ year" in job_description.lower():
                 job_exp_level = "Senior Level"
             else:
                 job_exp_level = "No experience required"
 
             # Extract job education level
+
+            
+           
+
+            if "education" in job_description.lower():
+                job_edu_desc = job_description.split("\n")
+                for edesc in job_edu_desc:
+                    if "education" in edesc:
+                        job_education_level += edesc
             if "high school degree" in job_description.lower():
                 job_education_level = "High School Degree"
             elif "associate degree" in job_description.lower():
@@ -302,17 +328,31 @@ class IndeedJobScraper:
 
     def write_to_csv(self, posted_at, job_title, company_link, company_location, job_type, job_salary, job_exp_level,
                      job_education_level, job_description):
+        
+       
+        filename = f"{self.search_term}.csv"
+        filename = filename.replace(" ", "_")
+        directory = os.path.splitext(filename)[0]
+
+        directory = os.path.join("data", directory)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        file_path = os.path.join(directory, filename)
+        if self.is_remove_file:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                self.is_remove_file = False
         headers = ['Posted At', 'Job Title', 'Company Link', 'Company Location', 'Job Type', 'Job Salary',
                    'Job Experience Level', 'Job Education', 'Job Description']
         
-        filename = f"{self.search_term}.csv"
-        filename = filename.replace(" ", "_")
-        with open(filename, mode='a', newline='', encoding='utf-8') as file:
+        
+        with open(file_path, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
                 writer.writerow(headers)
             writer.writerow([posted_at, job_title, company_link, company_location, job_type, job_salary, job_exp_level,
-                             job_education_level, job_description])
+                             job_education_level])
 
     def close_driver(self):
         self.driver.quit()

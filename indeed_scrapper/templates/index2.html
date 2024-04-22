@@ -299,12 +299,17 @@
                 const exp = row.insertCell();
                 const education = row.insertCell();
                 const companyLocation = row.insertCell();
+                var company_link = document.createElement("a");
+                company_link.href = job.company_link;
+                company_link.target = "_blank";
+                company_link.textContent = job.company_link;
+                companyLocationCell.appendChild(company_link);
                 
 
                 // Set the content of each cell
                 postedAtCell.textContent = job.posted_at;
                 jobTitleCell.textContent = job.job_title;
-                companyLocationCell.textContent = job.company_link;
+            
                 type.textContent = job.job_type;
                 Pay.textContent = job.job_salary;
                 exp.textContent = job.job_exp_level;

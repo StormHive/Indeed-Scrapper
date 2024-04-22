@@ -26,7 +26,7 @@ class ScraperJobsVew(APIView):
         keyword  = request.data.get('keyword', '')
         more_keywords = request.data.get("more_keywords", "")
         exclusives = request.data.get('exclusives', '')
-        posted_by = request.date.get("posted_by", "")
+        posted_by = request.data.get("posted_by", "")
 
 
         filters = {}
