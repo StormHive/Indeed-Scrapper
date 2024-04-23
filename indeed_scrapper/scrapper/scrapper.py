@@ -42,10 +42,13 @@ class IndeedJobScraper:
         search_bar.send_keys(self.search_term)
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
-        time.sleep(random.randint(1, 2))
+        time.sleep(1.5)
     
     def calculate_salary_range(self, job_salary, job_pay_type):
         try:
+            if not self.min_salary:
+                return True
+            print(self.min_salary, "*****************************************")         
             if "-" in job_salary:
                 pattern = r'\$?(\d{1,3}(?:,\d{3})?)\s*(?:–|-)?\s*\$?(\d{1,3}(?:,\d{3})?)?\s*(.*)'
                 matches = re.findall(pattern, job_salary)
@@ -77,8 +80,7 @@ class IndeedJobScraper:
                         False
         except Exception as e:
             print("Exception occured during calculated the salary:", e)
-            return True
-           
+            return False
            
 
     def apply_filters(self, filters):
@@ -118,13 +120,13 @@ class IndeedJobScraper:
                                     if filter_value.lower() in a_tag.text.lower():
                                         href = a_tag.get_attribute("href")
                                         self.driver.get(href)
-                            time.sleep(random.randint(1, 2))
+                            time.sleep(random.randint(1, 1.5))
                     
 
             except Exception as e:
                 print("Error occurred:", e)
             try:
-                time.sleep(2)
+                time.sleep(1.3)
                 modal_ = self.driver.find_element(By.XPATH, '//div[@role="dialog"]')
                 close_btn = modal_.find_element(By.TAG_NAME, "button")
                 close_btn.click()
@@ -308,7 +310,7 @@ class IndeedJobScraper:
             pass
 
         try:
-            time.sleep(0.5)
+            time.sleep(0.7)
             company_location = self.wait.until(
                 EC.presence_of_element_located((By.XPATH, '//div[@data-testid="inlineHeader-companyLocation"]'))).text
         except TimeoutException:
