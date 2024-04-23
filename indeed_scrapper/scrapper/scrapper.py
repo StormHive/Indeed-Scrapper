@@ -33,6 +33,8 @@ class IndeedJobScraper:
         self.more_exclusives = []
         self.scraped_jobs = []
         self.location = ""
+        self.exp_level = ""
+        self.education_level = ""
 
     def navigate_to_indeed(self):
         self.driver.get("https://www.indeed.com/jobs?q=engineering&l=&from=searchOnDesktopSerp&vjk=eedac6660fd549a6")
@@ -100,6 +102,10 @@ class IndeedJobScraper:
                     self.min_salary = filter_value
                 elif filter_name == "pay_type":
                     self.pay_type = filter_value
+                elif filter_name = "experience level":
+                    self.exp_level = filter_value
+                elif filter_name == "education":
+                    self.education_level = filter_value
                 filter_element = self.wait.until(
                     EC.presence_of_element_located((By.ID, "MosaicProviderRichSearchDaemon")))
                 filter_ul_elements = filter_element.find_elements(By.TAG_NAME, "ul")
@@ -188,6 +194,10 @@ class IndeedJobScraper:
                             job_title = self.driver.find_element(By.CLASS_NAME, "jobsearch-JobInfoHeader-title")
                         except Exception as e:
                             job_title = self.search_term
+                    if self.exp_level:
+                        job_exp_level = self.exp_level
+                    if self.education_level:
+                        job_education_level = self.education_level
                     if (self.keyword.lower() in job_description.lower() or self.keyword.lower() in job_cards_div.text.lower()):
                         if len(self.more_keywords) > 0 or len(self.more_exclusives) > 0:
                             if len(self.more_keywords) > 0:
