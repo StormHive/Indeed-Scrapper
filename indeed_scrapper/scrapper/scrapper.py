@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import csv
 import time
 import random, os
+import re
 
 
 class IndeedJobScraper:
@@ -22,6 +23,8 @@ class IndeedJobScraper:
         self.is_remove_file = True
         self.keyword = ""
         self.exclusives = ""
+        self.pay_type = ""
+        self.min_salary = ""
         self.job_type = ""
         self.job_title = ""
         self.include_more_keywords = False
@@ -29,9 +32,10 @@ class IndeedJobScraper:
         self.more_keywords = []
         self.more_exclusives = []
         self.scraped_jobs = []
+        self.location = ""
 
     def navigate_to_indeed(self):
-        self.driver.get("https://ca.indeed.com/")
+        self.driver.get("https://www.indeed.com/jobs?q=engineering&l=&from=searchOnDesktopSerp&vjk=eedac6660fd549a6")
 
     def search_jobs(self):
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
@@ -39,6 +43,28 @@ class IndeedJobScraper:
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
         time.sleep(random.randint(1, 2))
+    
+    def calculate_salary_range(self, job_salary, job_pay_type):
+        try:
+            pattern = r'\$?(\d{1,3}(?:,\d{3})?)\s*(?:–|-)?\s*\$?(\d{1,3}(?:,\d{3})?)?\s*(.*)'
+            matches = re.findall(pattern, job_salary)
+            for match in matches:
+                min_value = int(match[0].replace(',', ''))
+                max_value = int(match[1].replace(',', '')) if match[1] else None
+
+                unit = match[2]
+                print("Min Value:", min_value)
+                if max_value:
+                    print("Max Value:", max_value)
+            if int(self.min_salary) >= min_value and int(self.min_salary) <= max_value and job_pay_type in unit:
+                return True
+            else:
+                False
+        except Exception as e:
+            print("Exception occured during calculated the salary:", e)
+            return True
+           
+           
 
     def apply_filters(self, filters):
         for filter_name, filter_value in filters.items():
@@ -48,10 +74,16 @@ class IndeedJobScraper:
                     self.keyword = filter_value
                 elif filter_name == "job_type":
                     self.job_type = filter_value
+                elif filter_name == "location_":
+                    self.location = filter_value 
                 elif filter_name == "more_keywords":
                     self.more_keywords = filter_value
                 elif filter_name == "exclusives":
                     self.more_exclusives = filter_value
+                elif filter_name == "minimum_salary":
+                    self.min_salary = filter_value
+                elif filter_name == "pay_type":
+                    self.pay_type = filter_value
                 filter_element = self.wait.until(
                     EC.presence_of_element_located((By.ID, "MosaicProviderRichSearchDaemon")))
                 filter_ul_elements = filter_element.find_elements(By.TAG_NAME, "ul")
@@ -66,7 +98,7 @@ class IndeedJobScraper:
                             a_tags = li.find_elements(By.TAG_NAME, "a")
 
                             for a_tag in a_tags:
-                                print("Filter VAlues")
+                                print("Filter VAlues", filter_value)
                                 if filter_value:
                                 
                                     if filter_value.lower() in a_tag.text.lower():
@@ -100,6 +132,7 @@ class IndeedJobScraper:
             
             for item in job_list_items:
                 try:
+                    is_included = False
                     if self.search_term.lower() in item.text.lower():
                         self.driver.execute_script("arguments[0].scrollIntoView();", item)
                         item.click()
@@ -124,6 +157,15 @@ class IndeedJobScraper:
                     job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description = self.extract_job_details()
                     if not job_type:
                         job_type = self.job_type
+                    if not self.location in company_location:
+                        continue
+                    if job_salary:
+                        if "-" in job_salary:
+                            job_salary = job_salary.split("-", "")
+                            job_salary = job_salary[:-1]
+                        is_included = self.calculate_salary_range(job_salary, self.pay_type)
+                        if not is_included:
+                            continue
                     if not job_title:
                         try:
                             job_title = self.driver.find_element(By.CLASS_NAME, "jobsearch-JobInfoHeader-title")
@@ -215,7 +257,7 @@ class IndeedJobScraper:
                 return posted_at_items[-1].replace("More...", "")
             else:
                 return posted_at_items[-1]
-        elif 'day' in posted_at_items[-1].lower() in posted_at_items[-1].lower() or "days" in posted_at_items[-1].lower():
+        elif "posted" in posted_at_items[-1].lower():
             if "more" in posted_at_items[-1].lower():
                 return posted_at_items[-1].replace("More...", "")
             else:
@@ -261,9 +303,6 @@ class IndeedJobScraper:
             
             job_salary = self.wait.until(EC.presence_of_element_located((By.ID, 'salaryInfoAndJobType')))
             job_salary = job_salary.text
-            job_salary = job_salary.split(" - ")
-            if len(job_salary) > 1:
-                job_salary = job_salary[0]
             if not job_salary:
                 job_details_section = self.wait.until(EC.presence_of_element_located((By.ID, 'jobDetailsSection')))
                 self.driver.execute_script("arguments[0].scrollIntoView();", job_details_section)
@@ -299,12 +338,12 @@ class IndeedJobScraper:
             job_description = job_description_div.text
 
             # Extract job experience level
-            if "experience" in job_description.lower():
-                job_exp_desc = job_description.split("\n")
-                for desc in job_exp_desc:
-                    if "experience" in desc:
-                        job_exp_level += desc
-            elif "Entry level" in job_description.lower() or "1 year" in job_description.lower() or "2 year" in job_description.lower():
+            # if "experience" in job_description.lower():
+            #     job_exp_desc = job_description.split("\n")
+            #     for desc in job_exp_desc:
+            #         if "experience" in desc:
+            #             job_exp_level += desc
+            if "Entry level" in job_description.lower() or "1 year" in job_description.lower() or "2 year" in job_description.lower():
                 job_exp_level = "Entry level"
             elif "Mid level" in job_description.lower() or "3 year" in job_description.lower() or "4 year" in job_description.lower():
                 job_exp_level = "Mid level"
@@ -318,12 +357,12 @@ class IndeedJobScraper:
             
            
 
-            if "education" in job_description.lower():
-                job_edu_desc = job_description.split("\n")
-                for edesc in job_edu_desc:
-                    if "education" in edesc:
-                        job_education_level += edesc
-            elif "high school degree" in job_description.lower() or "high school" in job_description.lower():
+            # if "education" in job_description.lower():
+            #     job_edu_desc = job_description.split("\n")
+            #     for edesc in job_edu_desc:
+            #         if "education" in edesc:
+            #             job_education_level += edesc
+            if "high school degree" in job_description.lower() or "high school" in job_description.lower():
                 job_education_level = "High School Degree"    
             elif "secondary school" in job_description.lower():
                 job_education_level = "Secondary School"

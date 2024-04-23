@@ -16,9 +16,8 @@ class ScraperJobsVew(APIView):
     def post(self, request, *args, **kwargs):
         search_term = request.data.get('job_title', '').strip()
         date = request.data.get('job_date', '')
-        pay = request.data.get('min_salary', '')
-        if pay == "0":
-            pay = ""
+        pay_type = request.data.get('pay_type', '')
+        
         job_type = request.data.get('job_type', '')
         location = request.data.get('location', '')
         company = request.data.get('company', '')
@@ -27,7 +26,12 @@ class ScraperJobsVew(APIView):
         more_keywords = request.data.get("more_keywords", "")
         exclusives = request.data.get('exclusives', '')
         posted_by = request.data.get("posted_by", "")
-
+        experience_level = request.data.get("experience_level", "")
+        education = request.data.get("education", "")
+        remote = request.data.get("remote", "")
+        minimum_salary = request.data.get("minimum_salary", "")
+        if minimum_salary == "0":
+            minimum_salary = ""
 
         filters = {}
         if not search_term:
@@ -37,17 +41,19 @@ class ScraperJobsVew(APIView):
         
             
             if date:
-                filters["date"] = date
+                filters["date posted"] = date
             if posted_by:
-                filters["posted_by"] = posted_by
-            if pay:
-                filters["pay"] = pay
+                filters["posted by"] = posted_by
+            if pay_type:
+                filters["pay_type"] = pay_type
             if job_type:
                 filters["job type"] = job_type
             if location:
-                filters["location"] = location
+                filters["location_"] = location
             if company:
                 filters["company"] = company
+            if minimum_salary:
+                filters["minimum_salary"] = minimum_salary
             if job_lang:
                 filters["job language"] = job_lang
             if keyword:
@@ -56,14 +62,18 @@ class ScraperJobsVew(APIView):
                 exclusives = exclusives.split(",")
                 filters["exclusives"] = exclusives
             if more_keywords:
-                 more_keywords = more_keywords.split(",")
-                 filters["more_keywords"] = more_keywords
-            
-
+                more_keywords = more_keywords.split(",")
+                filters["more_keywords"] = more_keywords
+            if experience_level:
+                filters["experience level"] = experience_level
+            if education:
+                filters["education"] = education
+            if remote:
+                filters["remote"] = remote
             try:
                 job_scraper = IndeedJobScraper(search_term)
                 job_scraper.navigate_to_indeed()
-                job_scraper.search_jobs()
+                # job_scraper.search_jobs()
                 job_scraper.apply_filters(filters)
                 job_details = job_scraper.scrape_jobs()
                 job_scraper.close_driver()
