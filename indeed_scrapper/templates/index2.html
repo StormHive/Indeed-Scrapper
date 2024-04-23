@@ -213,7 +213,7 @@
                                         <label for="min_pay" class=" lh">
                                             Min. Pay ($)
                                         </label>
-                                        
+
                                         <input class="form-control searchbox mb-2 rounded" name="minpay"
                                             style="text-align: center;" type="text" placeholder="Type Minimum Pay">
                                     </div>
@@ -304,6 +304,21 @@
         function showLoader() {
             document.getElementById("loaderContainer").style.display = "flex";
         }
+        document.addEventListener("DOMContentLoaded", function () {
+            var paySelect = document.querySelector('select[name="pay"]');
+            var minPayInput = document.querySelector('input[name="minpay"]');
+
+            // Function to enable or disable the input field based on the selected pay type
+            function toggleMinPayInput() {
+                minPayInput.disabled = !(paySelect.value === "hour" || paySelect.value === "year");
+            }
+
+            // Add event listener to the pay dropdown
+            paySelect.addEventListener("change", toggleMinPayInput);
+
+            // Call the function initially to set the initial state
+            toggleMinPayInput();
+        });
     </script>
 
     <script>
@@ -317,12 +332,13 @@
                 // Insert cells for each job detail
                 const postedAtCell = row.insertCell();
                 const jobTitleCell = row.insertCell();
+                const companynameCell = row.insertCell();
                 const companyLocationCell = row.insertCell();
+                const companyLocation = row.insertCell();
                 const Pay = row.insertCell();
                 const type = row.insertCell();
                 const exp = row.insertCell();
                 const education = row.insertCell();
-                const companyLocation = row.insertCell();
                 var company_link = document.createElement("a");
                 company_link.href = job.company_link;
                 company_link.target = "_blank";
@@ -333,12 +349,12 @@
                 // Set the content of each cell
                 postedAtCell.textContent = job.posted_at;
                 jobTitleCell.textContent = job.job_title;
-
+                companynameCell.textContent = job.company_name;
+                companyLocation.textContent = job.company_location;
                 type.textContent = job.job_type;
                 Pay.textContent = job.job_salary;
                 exp.textContent = job.job_exp_level;
                 education.textContent = job.job_education_level;
-                companyLocation.textContent = job.company_location;
 
 
                 // Add more cells for other job details as needed
@@ -402,7 +418,9 @@
         }
 
     </script>
+
     <script>
+
         var x, i, j, l, ll, selElmnt, a, b, c;
         x = document.getElementsByClassName("custom-select");
         l = x.length;

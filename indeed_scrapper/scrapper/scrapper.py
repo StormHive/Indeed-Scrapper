@@ -121,7 +121,7 @@ class IndeedJobScraper:
                         posted_at = self.extract_posted_at(item)
                     except Exception as e:
                         print("Error occurred:", e)
-                    job_title, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description = self.extract_job_details()
+                    job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description = self.extract_job_details()
                     if not job_type:
                         job_type = self.job_type
                     if not job_title:
@@ -147,6 +147,7 @@ class IndeedJobScraper:
                                 self.scraped_jobs.append({  
                                     'posted_at': posted_at,
                                     'job_title': job_title,
+                                    'company_name': company_name,
                                     'company_link': company_link,
                                     'company_location': company_location,
                                     'job_type': job_type,
@@ -157,7 +158,8 @@ class IndeedJobScraper:
                                 })
                                 self.write_to_csv(
                                         posted_at, 
-                                        job_title, 
+                                        job_title,
+                                        company_name,
                                         company_link,
                                         company_location, 
                                         job_type, 
@@ -171,6 +173,7 @@ class IndeedJobScraper:
                             self.scraped_jobs.append({  
                                     'posted_at': posted_at,
                                     'job_title': job_title,
+                                    'company_name': company_name,
                                     'company_link': company_link,
                                     'company_location': company_location,
                                     'job_type': job_type,
@@ -181,7 +184,8 @@ class IndeedJobScraper:
                                 })
                             self.write_to_csv(
                                     posted_at, 
-                                    job_title, 
+                                    job_title,
+                                    company_name, 
                                     company_link,
                                     company_location, 
                                     job_type, 
@@ -221,6 +225,7 @@ class IndeedJobScraper:
     def extract_job_details(self):
         time.sleep(random.randint(1, 2))
         job_title_text_header = ""
+        company_name = ""
         company_link = ""
         company_location = ""
         job_type = ""
@@ -241,6 +246,7 @@ class IndeedJobScraper:
             company_name_div = self.wait.until(
                 EC.presence_of_element_located((By.XPATH, '//div[@data-testid="inlineHeader-companyName"]')))
             company_link = company_name_div.find_element(By.TAG_NAME, "a").get_attribute("href")
+            company_name = company_name_div.find_element(By.TAG_NAME, "a").text
         except (NoSuchElementException, TimeoutException):
             pass
 
@@ -334,9 +340,9 @@ class IndeedJobScraper:
         except (NoSuchElementException, TimeoutException):
             pass
 
-        return self.job_title, company_link, company_location, self.job_type, job_salary, job_exp_level, job_education_level, job_description
+        return self.job_title, company_name, company_link, company_location, self.job_type, job_salary, job_exp_level, job_education_level, job_description
 
-    def write_to_csv(self, posted_at, job_title, company_link, company_location, job_type, job_salary, job_exp_level,
+    def write_to_csv(self, posted_at, job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level,
                      job_education_level, job_description):
         
        
@@ -353,7 +359,7 @@ class IndeedJobScraper:
             if os.path.exists(file_path):
                 os.remove(file_path)
                 self.is_remove_file = False
-        headers = ['Posted At', 'Job Title', 'Company Link', 'Company Location', 'Job Type', 'Job Salary',
+        headers = ['Posted At', 'Job Title', 'Company Name', 'Company Link', 'Company Location', 'Job Type', 'Job Salary',
                    'Job Experience Level', 'Job Education', 'Job Description']
         
         
@@ -361,7 +367,7 @@ class IndeedJobScraper:
             writer = csv.writer(file)
             if file.tell() == 0:
                 writer.writerow(headers)
-            writer.writerow([posted_at, job_title, company_link, company_location, job_type, job_salary, job_exp_level,
+            writer.writerow([posted_at, job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level,
                              job_education_level])
 
     def close_driver(self):
