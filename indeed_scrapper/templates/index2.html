@@ -22,6 +22,14 @@
             <span></span>
             <span></span>
             <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </div>
     <nav class="et-hero-tabs">
@@ -42,16 +50,16 @@
                             <label for="job_title" class="mb-2">
                                 Enter the job
                             </label>
-                            <input class="form-control searchbox mb-2" name="job_title" style="padding: 10px 15px;" type="text"
-                                placeholder="Job title">
+                            <input class="form-control searchbox mb-2" name="job_title" style="padding: 10px 15px;"
+                                type="text" placeholder="Job title" required>
                         </div>
 
                         <div class="container-fluid d-flex justify-content-left flex-column mb-4">
                             <label for="job_title" class="mb-2">
                                 Add Company
                             </label>
-                            <input class="form-control searchbox mb-2" name="company" style="padding: 10px 15px;" type="text"
-                                placeholder="Company">
+                            <input class="form-control searchbox mb-2" name="company" style="padding: 10px 15px;"
+                                type="text" placeholder="Company">
                         </div>
 
                         <div class="container-fluid">
@@ -60,9 +68,7 @@
                             </div>
 
                             <div class="container-fluid filter-list-div bg-white p-3 rounded">
-
                                 <div class="row">
-
                                     <div class="col-lg-6 p-3 custom-select">
                                         <select class="form-select custom-dropdown py-3 " name="job_date" id="">
                                             <option value="" selected> Date Job posted</option>
@@ -147,11 +153,12 @@
                                             </option>
                                             <option value="Employer">Employer</option>
                                             <option value="Staffing agency">Staffing agency</option>
-
                                         </select>
+
                                     </div>
-                                    <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="experience_levele" id="">
+                                    <!-- <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="experience_levele"
+                                            id="">
                                             <option value="" selected>Experience level</option>
                                             <option value="Entry level">Entry level</option>
                                             <option value="Mid level">Mid level</option>
@@ -168,43 +175,45 @@
                                             <option value="Masters degree">Masters degree</option>
                                             <option value="Doctoral degree">Doctoral degree</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                 </div>
-                                <div class="rounded mt-3 mb-3" style="border: 1px solid rgb(121, 121, 121);">
-                                    <div class="container-fluid d-flex justify-content-left flex-column mt-4 mb-4">
-                                        <label for="job_title" class="mb-2 d-flex">
-                                            Minmum Salary:
-                                            <div id="manimum_range">$ 0</div>
-                                        </label>
-                                        <input class="form-range mb-2" name="max_salary" value="0" max="100000" min="0" type="range"
-                                            placeholder="Company" oninput="setminRange(this.value)">
+                                <div class="row mt-3" style="align-items: center;">
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3 " name="pay" id="">
+                                            <option value="" selected>Pay
+                                            </option>
+                                            <option value="hour">Per hour</option>
+                                            <option value="year">Per Year</option>
+                                        </select>
                                     </div>
-
-                                    <div class="container-fluid d-flex justify-content-left flex-column mt-4 mb-4">
-                                        <label for="job_title" class="mb-2 d-flex">
-                                            Maximum Salary:
-                                            <div id="maximum_range">$ 0</div>
+                                    <div class="col-lg-6 container-fluid d-flex justify-content-between">
+                                        <label for="min_pay" class="mb-1">
+                                            Min. Pay
                                         </label>
-                                        <input class="form-range mb-2" name="min_salary" value="0"  max="100000" min="0" type="range"
-                                            placeholder="Company" oninput="setmaxRange(this.value)">
+                                        <input class="form-control searchbox mb-2 rounded" name="minpay"
+                                            style="padding: 10px 15px; text-align: center;" type="text"
+                                            placeholder="Minimum Pay">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 p-3 custom-select">
-                                    <select class="form-select custom-dropdown py-3" name="keyword">
-                                        <option value="" selected>Keywords</option>
-                                        <option value="urgently hiring">urgently hiring</option>
-                                        <option value="hiring multiple candidates">hiring multiple candidates</option>
-                                        <option value="bonus">bonus</option>
-                                    </select>
+                                <div class="row mt-3">
+
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <select class="form-select custom-dropdown py-3" name="keyword">
+                                            <option value="">Keywords</option>
+                                            <option value="urgently hiring">urgently hiring</option>
+                                            <option value="hiring multiple candidates">hiring multiple candidates</option>
+                                            <option value="bonus">bonus</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="container-fluid d-flex justify-content-left flex-column mb-4">
                                     <label for="job_title" class="mb-2">
-                                        Enter More Keywords
+                                        Add More Keywords
                                     </label>
                                     <textarea class="form-control searchbox mb-2" name="more_keywords" type="text"
-                                        placeholder="Keywords"></textarea>
+                                        placeholder="Keywords(Seperate Every Keyword with a comma ',' e.g. Bouns, Required)"></textarea>
                                 </div>
 
                                 <div class="container-fluid d-flex justify-content-left flex-column mb-4">
@@ -212,13 +221,13 @@
                                         Add Exclusions
                                     </label>
                                     <textarea class="form-control searchbox mb-2" name="exclusives" type="text"
-                                        placeholder="Exclude"></textarea>
+                                        placeholder="Exclude(Seperate Every Exclusion with a comma ',' e.g. School, College)"></textarea>
                                 </div>
 
                             </div>
                             <div class="search-button" onclick="sendRequest();">
                                 <div>
-                                    <button href="#" id="searchButton">
+                                    <button href="#" id="searchButton" style="border: 0px;">
                                         <span></span>
                                         <span></span>
                                         <span></span>
@@ -241,31 +250,19 @@
                     <table class="table table-striped" id="jobDetailsTable">
                         <thead>
                             <tr>
-                                <th scope="col">Job Posted</th>
-                                <th scope="col">Job Ttile</th>
+                                <th scope="col">Date Posted</th>
+                                <th scope="col">Job Title</th>
+                                <th scope="col">Company Name</th>
                                 <th scope="col">Indeed Link</th>
+                                <th scope="col">Location</th>
                                 <th scope="col">Pay</th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Experience</th>
-                                <th scope="col">Education</th>
-                                <th scope="col">Location</th>
                             </tr>
                         </thead>
                         <tbody>
-                          
+
                         </tbody>
                     </table>
-                </div>
-                <div class="d-button d-flex justify-content-end" onclick="showLoader();">
-                    <div>
-                        <button  type="submit" id="d-button">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            Download CSV
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -283,7 +280,7 @@
     </script>
 
     <script>
-        function populateData(job_details){
+        function populateData(job_details) {
             const table = document.getElementById('jobDetailsTable');
 
             job_details.forEach(job => {
@@ -304,12 +301,12 @@
                 company_link.target = "_blank";
                 company_link.textContent = job.company_link;
                 companyLocationCell.appendChild(company_link);
-                
+
 
                 // Set the content of each cell
                 postedAtCell.textContent = job.posted_at;
                 jobTitleCell.textContent = job.job_title;
-            
+
                 type.textContent = job.job_type;
                 Pay.textContent = job.job_salary;
                 exp.textContent = job.job_exp_level;
@@ -324,6 +321,7 @@
 
         function sendRequest() {
             const form = document.querySelector('form');
+
 
             // Define a function to handle form submission
             function handleSubmit(event) {
@@ -361,7 +359,7 @@
                         console.error('Error:', error);
                         document.getElementById("loaderContainer").style.display = "none";
                     });
-                    
+
 
                 // Remove the event listener to prevent further submissions
                 form.removeEventListener('submit', handleSubmit);
@@ -369,7 +367,7 @@
 
             // Add event listener to the form
             form.addEventListener('submit', handleSubmit);
-}
+        }
 
     </script>
 

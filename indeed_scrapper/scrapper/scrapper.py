@@ -10,7 +10,13 @@ import random, os
 
 class IndeedJobScraper:
     def __init__(self, search_term):
-        self.driver = webdriver.Chrome()
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument("--window-size=1920,1080")
+        self.options.add_argument("--headless")
+        self.options.add_argument("--disable-gpu")
+        self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+        self.driver = webdriver.Chrome(options=self.options)
+        # self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 3)
         self.search_term = search_term
         self.is_remove_file = True
@@ -292,7 +298,7 @@ class IndeedJobScraper:
                 for desc in job_exp_desc:
                     if "experience" in desc:
                         job_exp_level += desc
-            if "Entry level" in job_description.lower() or "1 year" in job_description.lower() or "2 year" in job_description.lower():
+            elif "Entry level" in job_description.lower() or "1 year" in job_description.lower() or "2 year" in job_description.lower():
                 job_exp_level = "Entry level"
             elif "Mid level" in job_description.lower() or "3 year" in job_description.lower() or "4 year" in job_description.lower():
                 job_exp_level = "Mid level"
@@ -311,8 +317,12 @@ class IndeedJobScraper:
                 for edesc in job_edu_desc:
                     if "education" in edesc:
                         job_education_level += edesc
-            if "high school degree" in job_description.lower():
-                job_education_level = "High School Degree"
+            elif "high school degree" in job_description.lower():
+                job_education_level = "High School Degree"    
+            elif "secondary school" in job_description.lower():
+                job_education_level = "Secondary School"
+            elif "high school" in job_description.lower():
+                job_education_level = "High School"
             elif "associate degree" in job_description.lower():
                 job_education_level = "Associate Degree"
             elif "bachelor’s degree" in job_description.lower():
