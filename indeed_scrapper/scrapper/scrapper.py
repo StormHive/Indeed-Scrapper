@@ -46,20 +46,35 @@ class IndeedJobScraper:
     
     def calculate_salary_range(self, job_salary, job_pay_type):
         try:
-            pattern = r'\$?(\d{1,3}(?:,\d{3})?)\s*(?:–|-)?\s*\$?(\d{1,3}(?:,\d{3})?)?\s*(.*)'
-            matches = re.findall(pattern, job_salary)
-            for match in matches:
-                min_value = int(match[0].replace(',', ''))
-                max_value = int(match[1].replace(',', '')) if match[1] else None
+            if "-" in job_salary:
+                pattern = r'\$?(\d{1,3}(?:,\d{3})?)\s*(?:–|-)?\s*\$?(\d{1,3}(?:,\d{3})?)?\s*(.*)'
+                matches = re.findall(pattern, job_salary)
+                for match in matches:
+                    min_value = int(match[0].replace(',', ''))
+                    max_value = int(match[1].replace(',', '')) if match[1] else None
 
-                unit = match[2]
-                print("Min Value:", min_value)
-                if max_value:
-                    print("Max Value:", max_value)
-            if int(self.min_salary) >= min_value and int(self.min_salary) <= max_value and job_pay_type in unit:
-                return True
+                    unit = match[2]
+                    print("Min Value:", min_value)
+                    if max_value:
+                        print("Max Value:", max_value)
+                if int(self.min_salary) >= min_value and int(self.min_salary) <= max_value and job_pay_type in unit:
+                    return True
+                else:
+                    False
             else:
-                False
+                pattern = r'\$?(\d{1,3}(?:,\d{3})?(?:\.\d+)?)\s*(.*)'
+                matches = re.findall(pattern, job_salary)
+                for match in matches:
+                    value = float(match[0].replace(',', ''))
+                    unit = match[1]
+
+                    # Print the extracted values
+                    print("Value:", value)
+                    print("Unit:", unit)
+                    if value >= int(self.min_salary):
+                        return True
+                    else:
+                        False
         except Exception as e:
             print("Exception occured during calculated the salary:", e)
             return True
@@ -69,7 +84,6 @@ class IndeedJobScraper:
     def apply_filters(self, filters):
         for filter_name, filter_value in filters.items():
             try:
-               
                 if filter_name == "keyword":
                     self.keyword = filter_value
                 elif filter_name == "job_type":
@@ -161,8 +175,9 @@ class IndeedJobScraper:
                         continue
                     if job_salary:
                         if "-" in job_salary:
-                            job_salary = job_salary.split("-", "")
-                            job_salary = job_salary[:-1]
+                            splited_salary = []
+                            splited_salary = job_salary.split(" - ")
+                            job_salary = "-".join(splited_salary[:-1])
                         is_included = self.calculate_salary_range(job_salary, self.pay_type)
                         if not is_included:
                             continue
