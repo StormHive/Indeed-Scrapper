@@ -12,6 +12,9 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
     <script src="{% static 'js/script.js' %}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
     <title>Indeed</title>
 </head>
 
@@ -48,18 +51,18 @@
                     <form action="">
                         <div class="container-fluid d-flex justify-content-left flex-column mb-4">
                             <label for="job_title" class="mb-2">
-                                Enter the job
+                                Job Title
                             </label>
                             <input class="form-control searchbox mb-2" name="job_title" style="padding: 10px 15px;"
-                                type="text" placeholder="Job title" required>
+                                type="text" placeholder="Search Job title" required>
                         </div>
 
                         <div class="container-fluid d-flex justify-content-left flex-column mb-4">
                             <label for="job_title" class="mb-2">
-                                Add Company
+                                Company
                             </label>
-                            <input class="form-control searchbox mb-2" name="company" style="padding: 10px 15px;"
-                                type="text" placeholder="Company">
+                            <input class="form-control searchbox mb-2" name="Add company" style="padding: 10px 15px;"
+                                type="text" placeholder="Search Company">
                         </div>
 
                         <div class="container-fluid">
@@ -68,10 +71,12 @@
                             </div>
 
                             <div class="container-fluid filter-list-div bg-white p-3 rounded">
-                                <div class="row">
+                                <div class="row px-1 py-8">
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="job_date" id="">
-                                            <option value="" selected> Date Job posted</option>
+                                        <label class="lh">Date Job Posted</label>
+
+                                        <select class="form-select  py-3 " name="job_date" id="">
+                                            <option value="" selected>Select Date Job Posted</option>
                                             <option value="Last 24 hours">Last 24 hours</option>
                                             <option value="Last 3 days">Last 3 days</option>
                                             <option value="Last 7 days">Last 7 days</option>
@@ -82,8 +87,66 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="job_type" id="">
-                                            <option value="" selected>Job Type</option>
+                                        <label class="lh">State</label>
+                                        <select class="form-select  py-3 " name="state" id="stateSelect">
+                                            <option value="" selected>Select State</option>
+                                            <option value="AL">Alabama, AL</option>
+                                            <option value="AK">Alaska, AK</option>
+                                            <option value="AZ">Arizona, AZ</option>
+                                            <option value="AR">Arkansas, AR</option>
+                                            <option value="CA">California, CA</option>
+                                            <option value="CO">Colorado, CO</option>
+                                            <option value="CT">Connecticut, CT</option>
+                                            <option value="DE">Delaware, DE</option>
+                                            <option value="FL">Florida, FL</option>
+                                            <option value="GA">Georgia, GA</option>
+                                            <option value="HI">Hawaii, HI</option>
+                                            <option value="ID">Idaho, ID</option>
+                                            <option value="IL">Illinois, IL</option>
+                                            <option value="IN">Indiana, IN</option>
+                                            <option value="IA">Iowa, IA</option>
+                                            <option value="KS">Kansas, KS</option>
+                                            <option value="KY">Kentucky, KY</option>
+                                            <option value="LA">Louisiana, LA</option>
+                                            <option value="ME">Maine, ME</option>
+                                            <option value="MD">Maryland, MD</option>
+                                            <option value="MA">Massachusetts, MA</option>
+                                            <option value="MI">Michigan, MI</option>
+                                            <option value="MN">Minnesota, MN</option>
+                                            <option value="MS">Mississippi, MS</option>
+                                            <option value="MO">Missouri, MO</option>
+                                            <option value="MT">Montana, MT</option>
+                                            <option value="NE">Nebraska, NE</option>
+                                            <option value="NV">Nevada, NV</option>
+                                            <option value="NH">New Hampshire, NH</option>
+                                            <option value="NJ">New Jersey, NJ</option>
+                                            <option value="NM">New Mexico, NM</option>
+                                            <option value="NY">New York, NY</option>
+                                            <option value="NC">North Carolina, NC</option>
+                                            <option value="ND">North Dakota, ND</option>
+                                            <option value="OH">Ohio, OH</option>
+                                            <option value="OK">Oklahoma, OK</option>
+                                            <option value="OR">Oregon, OR</option>
+                                            <option value="PA">Pennsylvania, PA</option>
+                                            <option value="RI">Rhode Island, RI</option>
+                                            <option value="SC">South Carolina, SC</option>
+                                            <option value="SD">South Dakota, SD</option>
+                                            <option value="TN">Tennessee, TN</option>
+                                            <option value="TX">Texas, TX</option>
+                                            <option value="UT">Utah, UT</option>
+                                            <option value="VT">Vermont, VT</option>
+                                            <option value="VA">Virginia, VA</option>
+                                            <option value="WA">Washington, WA</option>
+                                            <option value="WV">West Virginia, WV</option>
+                                            <option value="WI">Wisconsin, WI</option>
+                                            <option value="WY">Wyoming, WY</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <label class="lh">Job Type</label>
+
+                                        <select class="form-select py-3" name="job_type" id="">
+                                            <option value="" selected>Select Job Type</option>
                                             <option value="Full-time">Full time</option>
                                             <option value="Part-time">Part time</option>
                                             <option value="Contract">Contract</option>
@@ -92,74 +155,23 @@
                                             <option value="Hybrid">Hybrid</option>
                                         </select>
                                     </div>
+
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="state" id="">
-                                            <option value="" selected>Select State</option>
-                                            <option value="Alabama">Alabama</option>
-                                            <option value="Alaska">Alaska</option>
-                                            <option value="Arizona">Arizona</option>
-                                            <option value="Arkansas">Arkansas</option>
-                                            <option value="California">California</option>
-                                            <option value="Colorado">Colorado</option>
-                                            <option value="Connecticut">Connecticut</option>
-                                            <option value="Delaware">Delaware</option>
-                                            <option value="Florida">Florida</option>
-                                            <option value="Georgia">Georgia</option>
-                                            <option value="Hawaii">Hawaii</option>
-                                            <option value="Idaho">Idaho</option>
-                                            <option value="Illinois">Illinois</option>
-                                            <option value="Indiana">Indiana</option>
-                                            <option value="Iowa">Iowa</option>
-                                            <option value="Kansas">Kansas</option>
-                                            <option value="Kentucky">Kentucky</option>
-                                            <option value="Louisiana">Louisiana</option>
-                                            <option value="Maine">Maine</option>
-                                            <option value="Maryland">Maryland</option>
-                                            <option value="Massachusetts">Massachusetts</option>
-                                            <option value="Michigan">Michigan</option>
-                                            <option value="Minnesota">Minnesota</option>
-                                            <option value="Mississippi">Mississippi</option>
-                                            <option value="Missouri">Missouri</option>
-                                            <option value="Montana">Montana</option>
-                                            <option value="Nebraska">Nebraska</option>
-                                            <option value="Nevada">Nevada</option>
-                                            <option value="New Hampshire">New Hampshire</option>
-                                            <option value="New Jersey">New Jersey</option>
-                                            <option value="New Mexico">New Mexico</option>
-                                            <option value="New York">New York</option>
-                                            <option value="North Carolina">North Carolina</option>
-                                            <option value="North Dakota">North Dakota</option>
-                                            <option value="Ohio">Ohio</option>
-                                            <option value="Oklahoma">Oklahoma</option>
-                                            <option value="Oregon">Oregon</option>
-                                            <option value="Pennsylvania">Pennsylvania</option>
-                                            <option value="Rhode Island">Rhode Island</option>
-                                            <option value="South Carolina">South Carolina</option>
-                                            <option value="South Dakota">South Dakota</option>
-                                            <option value="Tennessee">Tennessee</option>
-                                            <option value="Texas">Texas</option>
-                                            <option value="Utah">Utah</option>
-                                            <option value="Vermont">Vermont</option>
-                                            <option value="Virginia">Virginia</option>
-                                            <option value="Washington">Washington</option>
-                                            <option value="West Virginia">West Virginia</option>
-                                            <option value="Wisconsin">Wisconsin</option>
-                                            <option value="Wyoming">Wyoming</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="posted_by" id="">
-                                            <option value="" selected>Posted By
+                                        <label class="lh">Posted By</label>
+
+                                        <select class="form-select  py-3 " name="posted_by" id="">
+                                            <option value="" selected>Select Posted By
                                             </option>
                                             <option value="Employer">Employer</option>
                                             <option value="Staffing agency">Staffing agency</option>
                                         </select>
 
                                     </div>
-                                    <!-- <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="experience_levele"
-                                            id="">
-                                            <option value="" selected>Experience level</option>
+
+                                    <div class="col-lg-6 p-3 custom-select">
+                                        <label class="lh">Experience Level</label>
+                                        <select class="form-select  py-3 " name="experience_levele" id="">
+                                            <option value="" selected>Select Experience level</option>
                                             <option value="Entry level">Entry level</option>
                                             <option value="Mid level">Mid level</option>
                                             <option value="Senior level">Senior level</option>
@@ -167,64 +179,77 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="education" id="">
-                                            <option value="" selected>Education</option>
+                                        <label class="lh">Education</label>
+                                        <select class="form-select  py-3 " name="education" id="">
+                                            <option value="" selected>Select Education</option>
                                             <option value="High school degree">High school degree</option>
                                             <option value="Associate degree">Associate degree</option>
-                                            <option value="Bachelors degree">Bachelors degree</option>
-                                            <option value="Masters degree">Masters degree</option>
+                                            <option value="Bachelor's degree">Bachelor's degree</option>
+                                            <option value="Master's degree">Master's degree</option>
                                             <option value="Doctoral degree">Doctoral degree</option>
                                         </select>
-                                    </div> -->
-
-                                </div>
-                                <div class="row mt-3" style="align-items: center;">
+                                    </div>
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3 " name="pay" id="">
-                                            <option value="" selected>Pay
+                                        <label class="lh">Remote</label>
+                                        <select class="form-select  py-3 " name="remote" id="">
+                                            <option value="" selected>Select Remote
                                             </option>
-                                            <option value="hour">Per hour</option>
-                                            <option value="year">Per Year</option>
+                                            <option value="Hybrid Work">Hybrid Work</option>
+                                            <option value="Remote">Remote</option>
                                         </select>
                                     </div>
-                                    <div class="col-lg-6 container-fluid d-flex justify-content-between">
-                                        <label for="min_pay" class="mb-1">
-                                            Min. Pay
+                                </div>
+                                <div class="row mt-3" style="align-items: center;">
+                                    <label class="lh" style="margin-left: 5px;">Pay</label>
+                                    <div class="col-lg-5 p-3 custom-select">
+                                        <select class="form-select  py-3 " name="pay" id="">
+                                            <option value="" selected>Select Pay type
+                                            </option>
+                                            <option value="hour">Per hour</option>
+                                            <option value="year">Per year</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-7 container-fluid d-flex justify-content-between">
+                                        <label for="min_pay" class=" lh">
+                                            Min. Pay ($)
                                         </label>
+                                        
                                         <input class="form-control searchbox mb-2 rounded" name="minpay"
-                                            style="padding: 10px 15px; text-align: center;" type="text"
-                                            placeholder="Minimum Pay">
+                                            style="text-align: center;" type="text" placeholder="Type Minimum Pay">
                                     </div>
                                 </div>
                                 <div class="row mt-3">
 
                                     <div class="col-lg-6 p-3 custom-select">
-                                        <select class="form-select custom-dropdown py-3" name="keyword">
-                                            <option value="">Keywords</option>
+                                        <label class="lh">Keywords</label>
+
+                                        <select class="form-select  py-3" name="keyword">
+                                            <option value="">Select Keywords</option>
                                             <option value="urgently hiring">urgently hiring</option>
-                                            <option value="hiring multiple candidates">hiring multiple candidates</option>
+                                            <option value="hiring multiple candidates">hiring multiple candidates
+                                            </option>
                                             <option value="bonus">bonus</option>
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="container-fluid d-flex justify-content-left flex-column mb-4">
-                                    <label for="job_title" class="mb-2">
-                                        Add More Keywords
-                                    </label>
-                                    <textarea class="form-control searchbox mb-2" name="more_keywords" type="text"
-                                        placeholder="Keywords(Seperate Every Keyword with a comma ',' e.g. Bouns, Required)"></textarea>
-                                </div>
-
-                                <div class="container-fluid d-flex justify-content-left flex-column mb-4">
-                                    <label for="job_title" class="mb-2">
-                                        Add Exclusions
-                                    </label>
-                                    <textarea class="form-control searchbox mb-2" name="exclusives" type="text"
-                                        placeholder="Exclude(Seperate Every Exclusion with a comma ',' e.g. School, College)"></textarea>
-                                </div>
-
                             </div>
+                            <div class="container-fluid d-flex justify-content-left flex-column mb-4 mt-5">
+                                <label for="more_keywords" class="mb-2">
+                                    Add More Keywords
+                                </label>
+                                <textarea class="form-control searchbox mb-2" name="more_keywords" type="text"
+                                    placeholder="Keywords(Separate Every Keyword with a comma ',' e.g. Bouns, Required)"></textarea>
+                            </div>
+
+                            <div class="container-fluid d-flex justify-content-left flex-column mb-4">
+                                <label for="more_exclusions" class="mb-2">
+                                    Add Exclusions
+                                </label>
+                                <textarea class="form-control searchbox mb-2" name="exclusives" type="text"
+                                    placeholder="Exclude(Separate Every Exclusion with a comma ',' e.g. School, College)"></textarea>
+                            </div>
+
+
                             <div class="search-button" onclick="sendRequest();">
                                 <div>
                                     <button href="#" id="searchButton" style="border: 0px;">
@@ -256,7 +281,9 @@
                                 <th scope="col">Indeed Link</th>
                                 <th scope="col">Location</th>
                                 <th scope="col">Pay</th>
-                                <th scope="col">Type</th>
+                                <th scope="col">Job Type</th>
+                                <th scope="col">Experience Level</th>
+                                <th scope="col">Education</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -318,6 +345,11 @@
             });
 
         }
+        $(document).ready(function () {
+            $('#stateSelect').select2({
+                dropdownCssClass: "scrollable-dropdown"
+            });
+        });
 
         function sendRequest() {
             const form = document.querySelector('form');
@@ -370,7 +402,6 @@
         }
 
     </script>
-
     <script>
         var x, i, j, l, ll, selElmnt, a, b, c;
         x = document.getElementsByClassName("custom-select");

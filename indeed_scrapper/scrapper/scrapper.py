@@ -317,7 +317,7 @@ class IndeedJobScraper:
                 for edesc in job_edu_desc:
                     if "education" in edesc:
                         job_education_level += edesc
-            elif "high school degree" in job_description.lower():
+            elif "high school degree" in job_description.lower() or "high school" in job_description.lower():
                 job_education_level = "High School Degree"    
             elif "secondary school" in job_description.lower():
                 job_education_level = "Secondary School"
