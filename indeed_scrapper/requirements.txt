@@ -1,3 +1,2 @@
-requests
-selenium
-django
+Django==3.2.8
+requests==2.26.0
