@@ -37,7 +37,7 @@ class IndeedJobScraper:
         self.education_level = ""
 
     def navigate_to_indeed(self):
-        self.driver.get("https://www.indeed.com/jobs?q=engineering&l=&from=searchOnDesktopSerp&vjk=eedac6660fd549a6")
+        self.driver.get("https://www.indeed.com/")
 
     def search_jobs(self):
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
@@ -102,7 +102,7 @@ class IndeedJobScraper:
                     self.min_salary = filter_value
                 elif filter_name == "pay_type":
                     self.pay_type = filter_value
-                elif filter_name = "experience level":
+                elif filter_name == "experience level":
                     self.exp_level = filter_value
                 elif filter_name == "education":
                     self.education_level = filter_value
@@ -118,15 +118,14 @@ class IndeedJobScraper:
                         if filter_name.lower() in li.text.lower():
                             li.click()
                             a_tags = li.find_elements(By.TAG_NAME, "a")
-
-                            for a_tag in a_tags:
+                            for a_tag in a_tags:                                
                                 print("Filter VAlues", filter_value)
-                                if filter_value:
-                                
+                                if filter_value:                              
                                     if filter_value.lower() in a_tag.text.lower():
                                         href = a_tag.get_attribute("href")
                                         self.driver.get(href)
                             time.sleep(random.randint(1, 1.5))
+                            
                     
 
             except Exception as e:
@@ -364,12 +363,6 @@ class IndeedJobScraper:
             job_description_div = self.wait.until(EC.presence_of_element_located((By.ID, 'jobDescriptionText')))
             job_description = job_description_div.text
 
-            # Extract job experience level
-            # if "experience" in job_description.lower():
-            #     job_exp_desc = job_description.split("\n")
-            #     for desc in job_exp_desc:
-            #         if "experience" in desc:
-            #             job_exp_level += desc
             if "Entry level" in job_description.lower() or "1 year" in job_description.lower() or "2 year" in job_description.lower():
                 job_exp_level = "Entry level"
             elif "Mid level" in job_description.lower() or "3 year" in job_description.lower() or "4 year" in job_description.lower():
@@ -384,11 +377,7 @@ class IndeedJobScraper:
             
            
 
-            # if "education" in job_description.lower():
-            #     job_edu_desc = job_description.split("\n")
-            #     for edesc in job_edu_desc:
-            #         if "education" in edesc:
-            #             job_education_level += edesc
+
             if "high school degree" in job_description.lower() or "high school" in job_description.lower():
                 job_education_level = "High School Degree"    
             elif "secondary school" in job_description.lower():

@@ -73,7 +73,7 @@ class ScraperJobsVew(APIView):
             try:
                 job_scraper = IndeedJobScraper(search_term)
                 job_scraper.navigate_to_indeed()
-                # job_scraper.search_jobs()
+                job_scraper.search_jobs()
                 job_scraper.apply_filters(filters)
                 job_details = job_scraper.scrape_jobs()
                 job_scraper.close_driver()
