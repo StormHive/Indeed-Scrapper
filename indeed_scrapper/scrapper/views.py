@@ -81,4 +81,5 @@ class ScraperJobsVew(APIView):
                 return Response({'job_details': job_details}, status=status.HTTP_200_OK) 
             except Exception as e:
                 error_message = str(e)
+                print("Error Message: ", error_message)
                 return Response({'error_message': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -1,8 +1,8 @@
 {
 "apps": [{
-"name": "djnago_with_pm2",
+"name": "Indeed_scrapper_app",
 "script": "manage.py",
-"args": ["runserver", "127.0.0.1:8000"],
+"args": ["runserver", "203.161.55.172:3000"],
 "exec_mode": "fork",
 "instances": "1",
 "wait_ready": true,

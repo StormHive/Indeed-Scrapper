@@ -7,16 +7,30 @@ import csv
 import time
 import random, os
 import re
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 
 class IndeedJobScraper:
     def __init__(self, search_term):
         self.options = webdriver.ChromeOptions()
+        self.proxy_ip = '216.137.184.253'
+        self.proxy_port = 80
+        proxy = {
+          "http": f"http://{self.proxy_ip}:{self.proxy_port}",
+          "https": f"https://{self.proxy_ip}:{self.proxy_port}",
+        }
+        self.options.add_argument(f'--proxy-server={proxy["http"]}')
+        self.options.add_argument(f'--proxy-server={proxy["https"]}')
+
         self.options.add_argument("--window-size=1920,1080")
         self.options.add_argument("--headless")
         self.options.add_argument("--disable-gpu")
+        self.options.add_argument('--headless')
+        self.options.add_argument('--no-sandbox')
+        self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
-        self.driver = webdriver.Chrome(options=self.options)
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
         # self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 3)
         self.search_term = search_term
@@ -38,6 +52,9 @@ class IndeedJobScraper:
 
     def navigate_to_indeed(self):
         self.driver.get("https://www.indeed.com/")
+        html_content = self.driver.page_source
+        time.sleep(2)
+        print(html_content)
 
     def search_jobs(self):
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
