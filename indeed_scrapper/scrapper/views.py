@@ -10,7 +10,7 @@ from .scrapper import IndeedJobScraper
 
 class ScrapeHomeView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'index2.html')
+        return render(request, 'index.html')
 
 class ScraperJobsVew(APIView):
     def post(self, request, *args, **kwargs):
@@ -73,7 +73,7 @@ class ScraperJobsVew(APIView):
             try:
                 job_scraper = IndeedJobScraper(search_term)
                 job_scraper.navigate_to_indeed()
-                job_scraper.search_jobs()
+                # job_scraper.search_jobs()
                 job_scraper.apply_filters(filters)
                 job_details = job_scraper.scrape_jobs()
                 job_scraper.close_driver()

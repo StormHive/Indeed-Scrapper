@@ -1,0 +1,151 @@
+.color {
+    color: rgba(2, 128, 144, 1);
+  }
+  
+  .blueQueen {
+    color: rgba(69, 105, 144, 1);
+  }
+  
+  .redFire {
+    background: rgb(100, 249, 255) ;
+    background: linear-gradient(
+    90deg,
+    rgba(100, 249, 255, 1) 0%,
+    rgba(121, 211, 255, 1) 50%,
+    rgba(121, 232, 255, 1) 100%
+  ) ;
+  }
+  
+ 
+  .fontAsap {
+    font-family: 'Asap', sans-serif;
+  }
+  
+  body {
+    background: rgb(100, 249, 255) ;
+    background: linear-gradient(
+      90deg,
+      rgba(100, 249, 255, 1) 0%,
+      rgba(121, 211, 255, 1) 50%,
+      rgba(121, 232, 255, 1) 100%
+    ) ;    
+    font-family: 'Asap', sans-serif; 
+  }
+  
+  .login {
+    overflow: hidden;
+    background-color: white;
+    padding: 40px 30px 30px 30px;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    transform: translate(-50%, -50%);
+    transition: transform 300ms, box-shadow 300ms;
+    box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+  }
+  
+  .login::before, .login::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 45%;
+    border-bottom-left-radius: 35%;
+    border-bottom-right-radius: 40%;
+    z-index: -1;
+  }
+  
+  .login::before {
+    left: 40%;
+    bottom: -130%;
+    background-color: rgba(69, 105, 144, 0.15); /* blueQueen */
+    animation: wawes 6s infinite linear;
+  }
+  
+  .login::after {
+    left: 35%;
+    bottom: -125%;
+    background-color: rgba(2, 128, 144, 0.2); /* greenSeaweed */
+    animation: wawes 7s infinite;
+  }
+  
+  .login > input {
+    font-family: 'Asap', sans-serif; /* fontAsap */
+    display: block;
+    border-radius: 5px;
+    font-size: 16px;
+    background: white;
+    width: 100%;
+    border: 0;
+    padding: 10px 10px;
+    margin: 15px -10px;
+  }
+  
+  .login > button {
+    font-family: 'Asap', sans-serif; /* fontAsap */
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    width: 80px;
+    border: 0;
+    padding: 10px 0;
+    margin-top: 10px;
+    margin-left: -5px;
+    border-radius: 5px;
+    background-color: rgb(91, 244, 124); /* redFire */
+    transition: background-color 300ms;
+  }
+  
+  .login > button:hover {
+    background-color: rgb(0, 187, 255); /* darkened redFire */
+  }
+  
+  @keyframes wawes {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  #imgg {
+    display: flex;
+    justify-content: center;
+  }
+  .login .message {
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 14px;
+  }
+  .login .message a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  .login .lbls{
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+
+  /* login.css */
+.hidden {
+    display: none;
+}
+
+.error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}

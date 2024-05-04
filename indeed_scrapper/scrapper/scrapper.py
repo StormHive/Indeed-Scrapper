@@ -10,8 +10,6 @@ import re
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities  
-from urllib.parse import urlencode
-import undetected_chromedriver as uc
 
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 
@@ -32,7 +30,7 @@ class IndeedJobScraper:
         self.options.add_argument("--window-size=1920,1080")
 
         self.options.add_argument("--disable-gpu")
-        self.options.add_argument('--headless')
+        # self.options.add_argument('--headless')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
@@ -60,7 +58,7 @@ class IndeedJobScraper:
         self.filters = {}
 
     def navigate_to_indeed(self):
-        url = "https://www.indeed.com/"
+        url = "https://www.indeed.com/q-quality-engineer-jobs.html?vjk=2d87f0ff36635a3e"
         self.driver.get(url)
     
 
