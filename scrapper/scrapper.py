@@ -30,7 +30,7 @@ class IndeedJobScraper:
         self.options.add_argument("--window-size=1920,1080")
 
         self.options.add_argument("--disable-gpu")
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
@@ -132,7 +132,7 @@ class IndeedJobScraper:
                         self.driver.get(href)
                         self.locations_list.pop(i)  
                         found = True
-                        break  
+                        return found  
                     
             else:
                 if filter_value:
@@ -206,6 +206,7 @@ class IndeedJobScraper:
                     
 
             except Exception as e:
+                print("NOT FOUND EXCEPTION *********************************************************")
                 print("Error occurred:", e)
             try:
                 time.sleep(1.3)

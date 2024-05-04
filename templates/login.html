@@ -23,7 +23,7 @@
             <img src="{% static 'images/logo-removebg-preview.png' %}"
                 style="width: 40%; aspect-ratio: 2/2 ; object-fit: contain; margin: 5px;" alt="All Collar Recruiting">
         </a>
-        <form class="login" method="post">
+        <form class="login" method="POST" action="">
             {% csrf_token %}
             <label for="Username" class="lbls fw-bold">Username</label>
             <input type="text" name="username" placeholder="Username">

@@ -5,14 +5,50 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .scrapper import IndeedJobScraper
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 # Create your views here.
 
 
-class ScrapeHomeView(View):
+class ScrapeHomeView(LoginRequiredMixin, View):
+    permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
+    
+    
+class LoginView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("/home")
+            
+        return render(request, 'login.html')
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        context = {}
+        if username and password:
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/home')
+            else:
+                error_message = "Invalid username or password."
+                context["error_message"] = error_message
+                return render(request, 'login.html', context)
+        else:
+            error_message = "Username and password are required"
+            context["error_message"] = error_message
+            return render(request, 'login.html', context=context)
+            
 
 class ScraperJobsVew(APIView):
+    
+    permission_classes = [IsAuthenticated]
+    
     def post(self, request, *args, **kwargs):
         search_term = request.data.get('job_title', '').strip()
         date = request.data.get('job_date', '')
