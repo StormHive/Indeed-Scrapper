@@ -49,7 +49,7 @@ class ScraperJobsVew(APIView):
             if job_type:
                 filters["job type"] = job_type
             if location:
-                filters["location_"] = location
+                filters["location"] = location
             if company:
                 filters["company"] = company
             if minimum_salary:

@@ -7,37 +7,17 @@ import csv
 import time
 import random, os
 import re
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities  
-from urllib.parse import urlencode
-import undetected_chromedriver as uc
-
-from selenium.webdriver.common.proxy import Proxy, ProxyType
 
 
 class IndeedJobScraper:
     def __init__(self, search_term):
         self.options = webdriver.ChromeOptions()
-        self.API_KEY = "db82749045e9559f2a0ea358a71ccdac"
-        self.proxy_options = {
-            'proxy': {
-                'http': f'http://scraperapi:{self.API_KEY}@proxy-server.scraperapi.com:8001',
-                'https': f'http://scraperapi:{self.API_KEY}@proxy-server.scraperapi.com:8001',
-                'no_proxy': 'localhost,127.0.0.1'
-            }
-        }
-        
-
         self.options.add_argument("--window-size=1920,1080")
-
+        self.options.add_argument("--headless")
         self.options.add_argument("--disable-gpu")
-        self.options.add_argument('--headless')
-        self.options.add_argument('--no-sandbox')
-        self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
-        # self.driver = webdriver.Chrome()
+        
+        self.driver = webdriver.Safari()
         self.wait = WebDriverWait(self.driver, 3)
         self.search_term = search_term
         self.is_remove_file = True
@@ -53,17 +33,11 @@ class IndeedJobScraper:
         self.more_exclusives = []
         self.scraped_jobs = []
         self.location = ""
-        self.a_tags = []
-        self.locations_list = []
         self.exp_level = ""
         self.education_level = ""
-        self.filters = {}
 
     def navigate_to_indeed(self):
-        url = "https://www.indeed.com/"
-        self.driver.get(url)
-    
-
+        self.driver.get("https://www.indeed.com/")
 
     def search_jobs(self):
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
@@ -71,8 +45,6 @@ class IndeedJobScraper:
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
         time.sleep(1.5)
-        
-          
     
     def calculate_salary_range(self, job_salary, job_pay_type):
         try:
@@ -111,65 +83,16 @@ class IndeedJobScraper:
         except Exception as e:
             print("Exception occured during calculated the salary:", e)
             return False
-        
-    def add_locations(self, a_tags):
-        for item in a_tags:
-            self.locations_list.append(item.text)
-
            
-    def select_filters(self, filter_name, filter_value, a_tags):
-        found = False
-        for a_tag in a_tags:
-            if filter_name == "location":
-                time.sleep(1)
-                if len(self.locations_list) <= 0:
-                    self.add_locations(a_tags=a_tags)
-                    self.a_tags = a_tags                
-                                    
-                for i, value in enumerate(self.locations_list):  
-                    if filter_value and filter_value.lower() in value.lower() and value.lower() in a_tag.text.lower():
-                        print("INNER")
-                        href = a_tag.get_attribute("href")
-                        print("HREf", href)
-                        self.driver.get(href)
-                        self.locations_list.pop(i)  
-                        found = True
-                        break  
-                    
-            else:
-                if filter_value:
-                    if filter_value.lower() in a_tag.text.lower():
-                        href = a_tag.get_attribute("href")
-                        self.driver.get(href)
-        time.sleep(1)
-        return found
-                
-    def apply_location_filter_again(self, filter_name, filter_value):
-        filter_element = self.wait.until(
-                    EC.presence_of_element_located((By.ID, "MosaicProviderRichSearchDaemon")))
-        filter_ul_elements = filter_element.find_elements(By.TAG_NAME, "ul")
 
-        if filter_ul_elements:
-            filter_ul = filter_ul_elements[0]
-            filter_li_elements = filter_ul.find_elements(By.TAG_NAME, "li")
-
-            for li in filter_li_elements:
-                if filter_name == "location" and (filter_name in li.text.lower()) and len(self.locations_list) > 0:
-                    li.click()
-                    a_tags = li.find_elements(By.TAG_NAME, "a")
-                    found = self.select_filters(filter_name=filter_name, filter_value=filter_value, a_tags=a_tags)
-                    time.sleep(1)
-                    return found
-        
     def apply_filters(self, filters):
-        self.filters = filters
         for filter_name, filter_value in filters.items():
             try:
                 if filter_name == "keyword":
                     self.keyword = filter_value
                 elif filter_name == "job_type":
                     self.job_type = filter_value
-                elif filter_name == "location":
+                elif filter_name == "location_":
                     self.location = filter_value 
                 elif filter_name == "more_keywords":
                     self.more_keywords = filter_value
@@ -192,18 +115,16 @@ class IndeedJobScraper:
                     filter_li_elements = filter_ul.find_elements(By.TAG_NAME, "li")
 
                     for li in filter_li_elements:
-                        if filter_name == "location" and (self.location.lower() in li.text.lower()) and len(self.locations_list) > 0:
-                            li.click()
-                            found = self.apply_location_filter_again(filter_name, filter_value)
-                            return found
                         if filter_name.lower() in li.text.lower():
-                            
                             li.click()
-                                
                             a_tags = li.find_elements(By.TAG_NAME, "a")
-                            
-                            self.select_filters(filter_name=filter_name, filter_value=filter_value, a_tags=a_tags)
-                            time.sleep(1)
+                            for a_tag in a_tags:                                
+                                print("Filter VAlues", filter_value)
+                                if filter_value:                              
+                                    if filter_value.lower() in a_tag.text.lower():
+                                        href = a_tag.get_attribute("href")
+                                        self.driver.get(href)
+                            time.sleep(random.randint(1, 1.5))
                             
                     
 
@@ -255,7 +176,6 @@ class IndeedJobScraper:
                     except Exception as e:
                         print("Error occurred:", e)
                     job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description = self.extract_job_details()
-                    print(company_location)
                     if not job_type:
                         job_type = self.job_type
                     if not self.location in company_location:
@@ -277,8 +197,6 @@ class IndeedJobScraper:
                         job_exp_level = self.exp_level
                     if self.education_level:
                         job_education_level = self.education_level
-                        
-                   
                     if (self.keyword.lower() in job_description.lower() or self.keyword.lower() in job_cards_div.text.lower()):
                         if len(self.more_keywords) > 0 or len(self.more_exclusives) > 0:
                             if len(self.more_keywords) > 0:
@@ -354,11 +272,6 @@ class IndeedJobScraper:
                 next_page_button.click()
             except Exception as e:
                 print("No further jobs", e)
-                if len(self.locations_list) > 0:
-                    found = self.apply_filters(self.filters)
-                    if not found:
-                        break
-                    continue
                 break
 
         return self.scraped_jobs 
