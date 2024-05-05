@@ -59,7 +59,7 @@ class IndeedJobScraper:
         self.filters = {}
 
     def navigate_to_indeed(self):
-        url = "https://www.indeed.com/q-quality-engineer-jobs.html?vjk=2d87f0ff36635a3e"
+        url = "https://www.indeed.com/"
         self.driver.get(url)
     
 

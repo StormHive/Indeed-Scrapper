@@ -69,10 +69,9 @@ class LoginView(View):
             return render(request, 'login.html', context=context)
             
 
-class ScraperJobsVew(APIView):
+class ScraperJobsVew(LoginRequiredMixin, APIView):
         
     def post(self, request, *args, **kwargs):
-        print(request.user)
         search_term = request.data.get('job_title', '').strip()
         date = request.data.get('job_date', '')
         pay_type = request.data.get('pay_type', '')
@@ -97,8 +96,6 @@ class ScraperJobsVew(APIView):
             error_message = 'Search term cannot be empty'
             return Response({'error_message': error_message}, status=status.HTTP_400_BAD_REQUEST)
         else:
-        
-            
             if date:
                 filters["date posted"] = date
             if posted_by:
@@ -132,7 +129,7 @@ class ScraperJobsVew(APIView):
             try:
                 job_scraper = IndeedJobScraper(search_term)
                 job_scraper.navigate_to_indeed()
-                # job_scraper.search_jobs()
+                job_scraper.search_jobs()
                 job_scraper.apply_filters(filters)
                 job_details = job_scraper.scrape_jobs()
                 job_scraper.close_driver()

@@ -49,6 +49,7 @@
                 </div>
                 <div class="container-fluid p-0">
                     <form action="">
+                        {% csrf_token %}
                         <div class="container-fluid d-flex justify-content-left flex-column mb-4">
                             <label for="job_title" class="mb-2">
                                 Job Title
@@ -405,7 +406,6 @@
         function sendRequest() {
             const form = document.querySelector('form');
 
-
             function handleSubmit(event) {
                 event.preventDefault();
 
@@ -422,7 +422,8 @@
                 fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': jsonObject["csrfmiddlewaretoken"]
                     },
                     body: JSON.stringify(jsonObject)
                 })
