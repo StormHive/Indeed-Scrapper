@@ -7,6 +7,7 @@ import csv
 import time
 import random, os
 import re
+from datetime import datetime
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities  
@@ -76,7 +77,6 @@ class IndeedJobScraper:
         try:
             if not self.min_salary:
                 return True
-            print(self.min_salary, "*****************************************")         
             if "-" in job_salary:
                 pattern = r'\$?(\d{1,3}(?:,\d{3})?)\s*(?:–|-)?\s*\$?(\d{1,3}(?:,\d{3})?)?\s*(.*)'
                 matches = re.findall(pattern, job_salary)
@@ -99,7 +99,6 @@ class IndeedJobScraper:
                     value = float(match[0].replace(',', ''))
                     unit = match[1]
 
-                    # Print the extracted values
                     print("Value:", value)
                     print("Unit:", unit)
                     if value >= int(self.min_salary):
@@ -206,7 +205,6 @@ class IndeedJobScraper:
                     
 
             except Exception as e:
-                print("NOT FOUND EXCEPTION *********************************************************")
                 print("Error occurred:", e)
             try:
                 time.sleep(1.3)
@@ -458,7 +456,6 @@ class IndeedJobScraper:
             else:
                 job_exp_level = "No experience required"
 
-            # Extract job education level
 
             
            

@@ -6,4 +6,5 @@ urlpatterns = [
     path('home/', ScrapeHomeView.as_view(), name='scrape_home'),
     path('job_scrapper/', ScraperJobsVew.as_view(), name='scrape_jobs'),
     path('accounts/login/', LoginView.as_view(), name='scrape_jobs'),
+    path('download-csv/<str:search_term>/', DownloadCsv.as_view(), name='download_csv'),
 ]

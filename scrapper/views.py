@@ -9,6 +9,11 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.views.generic import View
+import os
+import csv
+from datetime import datetime
 
 
 # Create your views here.
@@ -19,7 +24,26 @@ class ScrapeHomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
     
-    
+class DownloadCsv(APIView):
+    def get(self, request, search_term, *args, **kwargs):    
+        filename = f"{search_term}.csv"
+        filename = filename.replace(" ", "_")
+        directory = os.path.splitext(filename)[0]
+
+        directory = os.path.join("data", directory)
+
+        file_path = os.path.join(directory, filename)
+        # Check if the file exists
+        if os.path.exists(file_path):
+        # Open the file and create a response with its contents
+            with open(file_path, 'rb') as file:
+                response = HttpResponse(file.read(), content_type='text/csv')
+                response['Content-Disposition'] = f'attachment; filename="{filename}"'
+                return response
+        else:
+            return HttpResponse("File not found", status=404)
+
+
 class LoginView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -46,10 +70,9 @@ class LoginView(View):
             
 
 class ScraperJobsVew(APIView):
-    
-    permission_classes = [IsAuthenticated]
-    
+        
     def post(self, request, *args, **kwargs):
+        print(request.user)
         search_term = request.data.get('job_title', '').strip()
         date = request.data.get('job_date', '')
         pay_type = request.data.get('pay_type', '')
@@ -119,3 +142,4 @@ class ScraperJobsVew(APIView):
                 error_message = str(e)
                 print("Error Message: ", error_message)
                 return Response({'error_message': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
