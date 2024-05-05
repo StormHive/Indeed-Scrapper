@@ -32,6 +32,7 @@ class IndeedJobScraper:
 
         self.options.add_argument("--disable-gpu")
         self.options.add_argument('--headless')
+        self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
@@ -59,7 +60,7 @@ class IndeedJobScraper:
         self.filters = {}
 
     def navigate_to_indeed(self):
-        url = "https://www.indeed.com/"
+        url = "https://www.indeed.com"
         self.driver.get(url)
     
 
@@ -67,6 +68,8 @@ class IndeedJobScraper:
     def search_jobs(self):
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
         search_bar.send_keys(self.search_term)
+        search_bar_where = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-where")))
+        search_bar_where.clear()
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
         time.sleep(1.5)
