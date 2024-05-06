@@ -74,8 +74,7 @@ class ScraperJobsVew(LoginRequiredMixin, APIView):
     def post(self, request, *args, **kwargs):
         search_term = request.data.get('job_title', '').strip()
         date = request.data.get('job_date', '')
-        pay_type = request.data.get('pay_type', '')
-        
+        pay_type = request.data.get('pay_type', '')        
         job_type = request.data.get('job_type', '')
         location = request.data.get('location', '')
         company = request.data.get('company', '')
@@ -129,7 +128,7 @@ class ScraperJobsVew(LoginRequiredMixin, APIView):
             try:
                 job_scraper = IndeedJobScraper(search_term)
                 job_scraper.navigate_to_indeed()
-                job_scraper.search_jobs()
+                # job_scraper.search_jobs()
                 job_scraper.apply_filters(filters)
                 job_details = job_scraper.scrape_jobs()
                 job_scraper.close_driver()

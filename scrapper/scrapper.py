@@ -29,9 +29,8 @@ class IndeedJobScraper:
         
 
         self.options.add_argument("--window-size=1920,1080")
-
         self.options.add_argument("--disable-gpu")
-        self.options.add_argument('--headless')
+        # self.options.add_argument('--headless')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
@@ -40,6 +39,8 @@ class IndeedJobScraper:
         # self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 3)
         self.search_term = search_term
+        self.location = ""
+        self.locationcode = ""
         self.is_remove_file = True
         self.keyword = ""
         self.exclusives = ""
@@ -52,7 +53,6 @@ class IndeedJobScraper:
         self.more_keywords = []
         self.more_exclusives = []
         self.scraped_jobs = []
-        self.location = ""
         self.a_tags = []
         self.locations_list = []
         self.exp_level = ""
@@ -60,16 +60,20 @@ class IndeedJobScraper:
         self.filters = {}
 
     def navigate_to_indeed(self):
-        url = "https://www.indeed.com"
+        url = "https://www.indeed.com/q-quality-engineer-jobs.html?vjk=4de5529aa2a921b0"
         self.driver.get(url)
     
 
-
     def search_jobs(self):
-        search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
-        search_bar.send_keys(self.search_term)
         search_bar_where = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-where")))
         search_bar_where.clear()
+        if self.location:
+            splited_location = self.location.split(",") 
+            self.location = splited_location[0]
+            self.locationcode = splited_location[1]
+            search_bar_where.send_keys(self.location)
+        search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
+        search_bar.send_keys(self.search_term)
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
         time.sleep(1.5)
@@ -112,54 +116,54 @@ class IndeedJobScraper:
             print("Exception occured during calculated the salary:", e)
             return False
         
-    def add_locations(self, a_tags):
-        for item in a_tags:
-            self.locations_list.append(item.text)
+    # def add_locations(self, a_tags):
+    #     for item in a_tags:
+    #         self.locations_list.append(item.text)
 
            
-    def select_filters(self, filter_name, filter_value, a_tags):
-        found = False
-        for a_tag in a_tags:
-            if filter_name == "location":
-                time.sleep(1)
-                if len(self.locations_list) <= 0:
-                    self.add_locations(a_tags=a_tags)
-                    self.a_tags = a_tags                
+    # def select_filters(self, filter_name, filter_value, a_tags):
+    #     found = False
+    #     for a_tag in a_tags:
+    #         if filter_name == "location":
+    #             time.sleep(1)
+    #             if len(self.locations_list) <= 0:
+    #                 self.add_locations(a_tags=a_tags)
+    #                 self.a_tags = a_tags                
                                     
-                for i, value in enumerate(self.locations_list):  
-                    if filter_value and filter_value.lower() in value.lower() and value.lower() in a_tag.text.lower():
-                        print("INNER")
-                        href = a_tag.get_attribute("href")
-                        print("HREf", href)
-                        self.driver.get(href)
-                        self.locations_list.pop(i)  
-                        found = True
-                        return found  
+    #             for i, value in enumerate(self.locations_list):  
+    #                 if filter_value and filter_value.lower() in value.lower() and value.lower() in a_tag.text.lower():
+    #                     print("INNER")
+    #                     href = a_tag.get_attribute("href")
+    #                     print("HREf", href)
+    #                     self.driver.get(href)
+    #                     self.locations_list.pop(i)  
+    #                     found = True
+    #                     return found  
                     
-            else:
-                if filter_value:
-                    if filter_value.lower() in a_tag.text.lower():
-                        href = a_tag.get_attribute("href")
-                        self.driver.get(href)
-        time.sleep(1)
-        return found
+    #         else:
+    #             if filter_value:
+    #                 if filter_value.lower() in a_tag.text.lower():
+    #                     href = a_tag.get_attribute("href")
+    #                     self.driver.get(href)
+    #     time.sleep(1)
+    #     return found
                 
-    def apply_location_filter_again(self, filter_name, filter_value):
-        filter_element = self.wait.until(
-                    EC.presence_of_element_located((By.ID, "MosaicProviderRichSearchDaemon")))
-        filter_ul_elements = filter_element.find_elements(By.TAG_NAME, "ul")
+    # def apply_location_filter_again(self, filter_name, filter_value):
+    #     filter_element = self.wait.until(
+    #                 EC.presence_of_element_located((By.ID, "MosaicProviderRichSearchDaemon")))
+    #     filter_ul_elements = filter_element.find_elements(By.TAG_NAME, "ul")
 
-        if filter_ul_elements:
-            filter_ul = filter_ul_elements[0]
-            filter_li_elements = filter_ul.find_elements(By.TAG_NAME, "li")
+    #     if filter_ul_elements:
+    #         filter_ul = filter_ul_elements[0]
+    #         filter_li_elements = filter_ul.find_elements(By.TAG_NAME, "li")
 
-            for li in filter_li_elements:
-                if filter_name == "location" and (filter_name in li.text.lower()) and len(self.locations_list) > 0:
-                    li.click()
-                    a_tags = li.find_elements(By.TAG_NAME, "a")
-                    found = self.select_filters(filter_name=filter_name, filter_value=filter_value, a_tags=a_tags)
-                    time.sleep(1)
-                    return found
+    #         for li in filter_li_elements:
+    #             if filter_name == "location" and (filter_name in li.text.lower()) and len(self.locations_list) > 0:
+    #                 li.click()
+    #                 a_tags = li.find_elements(By.TAG_NAME, "a")
+    #                 found = self.select_filters(filter_name=filter_name, filter_value=filter_value, a_tags=a_tags)
+    #                 time.sleep(1)
+    #                 return found
         
     def apply_filters(self, filters):
         self.filters = filters
@@ -192,10 +196,8 @@ class IndeedJobScraper:
                     filter_li_elements = filter_ul.find_elements(By.TAG_NAME, "li")
 
                     for li in filter_li_elements:
-                        if filter_name == "location" and (self.location.lower() in li.text.lower()) and len(self.locations_list) > 0:
-                            li.click()
-                            found = self.apply_location_filter_again(filter_name, filter_value)
-                            return found
+                        if filter_name == "location":
+                            continue
                         if filter_name.lower() in li.text.lower():
                             
                             li.click()
@@ -258,7 +260,7 @@ class IndeedJobScraper:
                     print(company_location)
                     if not job_type:
                         job_type = self.job_type
-                    if not self.location in company_location:
+                    if not self.locationcode.strip() in company_location:
                         continue
                     if job_salary:
                         if "-" in job_salary:
