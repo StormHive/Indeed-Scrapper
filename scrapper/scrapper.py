@@ -180,8 +180,7 @@ class IndeedJobScraper:
             for item in job_list_items:
                 try:
                     is_included = False
-                    splited_text_title = self.search_term.split()
-                    if all(word.lower() in item.text.lower() for word in splited_text_title):
+                    if self.search_term.lower() in item.text.lower():
                         self.driver.execute_script("arguments[0].scrollIntoView();", item)
                         item.click()
 
@@ -208,6 +207,10 @@ class IndeedJobScraper:
                         print("Error occurred:", e)
                     job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description = self.extract_job_details()
                     print(company_location)
+
+                    splited_text_title = self.search_term.split()
+                    if not all(word.lower() in job_title.lower() for word in splited_text_title):
+                        continue
                     if not job_type:
                         job_type = self.job_type
                     if not self.locationcode.strip() in company_location:
