@@ -364,7 +364,9 @@
     <script>
         function populateData(job_details) {
             const table = document.getElementById('jobDetailsTable');
-
+            while (table.rows.length > 0) {
+                table.deleteRow(0);
+            }
             job_details.forEach(job => {
                 const row = table.insertRow();
 

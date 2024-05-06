@@ -21,11 +21,13 @@ from datetime import datetime
 
 class ScrapeHomeView(LoginRequiredMixin, View):
     permission_classes = [IsAuthenticated]
+
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
-    
+
+
 class DownloadCsv(APIView):
-    def get(self, request, search_term, *args, **kwargs):    
+    def get(self, request, search_term, *args, **kwargs):
         filename = f"{search_term}.csv"
         filename = filename.replace(" ", "_")
         directory = os.path.splitext(filename)[0]
@@ -35,7 +37,7 @@ class DownloadCsv(APIView):
         file_path = os.path.join(directory, filename)
         # Check if the file exists
         if os.path.exists(file_path):
-        # Open the file and create a response with its contents
+            # Open the file and create a response with its contents
             with open(file_path, 'rb') as file:
                 response = HttpResponse(file.read(), content_type='text/csv')
                 response['Content-Disposition'] = f'attachment; filename="{filename}"'
@@ -48,8 +50,9 @@ class LoginView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect("/home")
-            
+
         return render(request, 'login.html')
+
     def post(self, request, *args, **kwargs):
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -67,19 +70,19 @@ class LoginView(View):
             error_message = "Username and password are required"
             context["error_message"] = error_message
             return render(request, 'login.html', context=context)
-            
+
 
 class ScraperJobsVew(LoginRequiredMixin, APIView):
-        
+
     def post(self, request, *args, **kwargs):
         search_term = request.data.get('job_title', '').strip()
         date = request.data.get('job_date', '')
-        pay_type = request.data.get('pay_type', '')        
+        pay_type = request.data.get('pay_type', '')
         job_type = request.data.get('job_type', '')
         location = request.data.get('location', '')
         company = request.data.get('company', '')
         job_lang = request.data.get('job_language', '')
-        keyword  = request.data.get('keyword', '')
+        keyword = request.data.get('keyword', '')
         more_keywords = request.data.get("more_keywords", "")
         exclusives = request.data.get('exclusives', '')
         posted_by = request.data.get("posted_by", "")
@@ -128,14 +131,13 @@ class ScraperJobsVew(LoginRequiredMixin, APIView):
             try:
                 job_scraper = IndeedJobScraper(search_term)
                 job_scraper.navigate_to_indeed()
-                # job_scraper.search_jobs()
+                job_scraper.search_jobs()
                 job_scraper.apply_filters(filters)
                 job_details = job_scraper.scrape_jobs()
                 job_scraper.close_driver()
 
-                return Response({'job_details': job_details}, status=status.HTTP_200_OK) 
+                return Response({'job_details': job_details}, status=status.HTTP_200_OK)
             except Exception as e:
                 error_message = str(e)
                 print("Error Message: ", error_message)
                 return Response({'error_message': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-

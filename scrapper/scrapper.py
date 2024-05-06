@@ -1,18 +1,16 @@
+import csv
+import os
+import random
+import re
+import time
+
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import csv
-import time
-import random, os
-import re
-from datetime import datetime
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities  
-
-from selenium.webdriver.common.proxy import Proxy, ProxyType
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class IndeedJobScraper:
@@ -26,7 +24,6 @@ class IndeedJobScraper:
                 'no_proxy': 'localhost,127.0.0.1'
             }
         }
-        
 
         self.options.add_argument("--window-size=1920,1080")
         self.options.add_argument("--disable-gpu")
@@ -34,7 +31,8 @@ class IndeedJobScraper:
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
-        self.options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+        self.options.add_argument(
+            "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
         # self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 3)
@@ -62,13 +60,12 @@ class IndeedJobScraper:
     def navigate_to_indeed(self):
         url = "https://www.indeed.com/q-quality-engineer-jobs.html?vjk=4de5529aa2a921b0"
         self.driver.get(url)
-    
 
     def search_jobs(self):
         search_bar_where = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-where")))
         search_bar_where.clear()
         if self.location:
-            splited_location = self.location.split(",") 
+            splited_location = self.location.split(",")
             self.location = splited_location[0]
             self.locationcode = splited_location[1]
             search_bar_where.send_keys(self.location)
@@ -77,9 +74,7 @@ class IndeedJobScraper:
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
         time.sleep(1.5)
-        
-          
-    
+
     def calculate_salary_range(self, job_salary, job_pay_type):
         try:
             if not self.min_salary:
@@ -115,56 +110,7 @@ class IndeedJobScraper:
         except Exception as e:
             print("Exception occured during calculated the salary:", e)
             return False
-        
-    # def add_locations(self, a_tags):
-    #     for item in a_tags:
-    #         self.locations_list.append(item.text)
 
-           
-    # def select_filters(self, filter_name, filter_value, a_tags):
-    #     found = False
-    #     for a_tag in a_tags:
-    #         if filter_name == "location":
-    #             time.sleep(1)
-    #             if len(self.locations_list) <= 0:
-    #                 self.add_locations(a_tags=a_tags)
-    #                 self.a_tags = a_tags                
-                                    
-    #             for i, value in enumerate(self.locations_list):  
-    #                 if filter_value and filter_value.lower() in value.lower() and value.lower() in a_tag.text.lower():
-    #                     print("INNER")
-    #                     href = a_tag.get_attribute("href")
-    #                     print("HREf", href)
-    #                     self.driver.get(href)
-    #                     self.locations_list.pop(i)  
-    #                     found = True
-    #                     return found  
-                    
-    #         else:
-    #             if filter_value:
-    #                 if filter_value.lower() in a_tag.text.lower():
-    #                     href = a_tag.get_attribute("href")
-    #                     self.driver.get(href)
-    #     time.sleep(1)
-    #     return found
-                
-    # def apply_location_filter_again(self, filter_name, filter_value):
-    #     filter_element = self.wait.until(
-    #                 EC.presence_of_element_located((By.ID, "MosaicProviderRichSearchDaemon")))
-    #     filter_ul_elements = filter_element.find_elements(By.TAG_NAME, "ul")
-
-    #     if filter_ul_elements:
-    #         filter_ul = filter_ul_elements[0]
-    #         filter_li_elements = filter_ul.find_elements(By.TAG_NAME, "li")
-
-    #         for li in filter_li_elements:
-    #             if filter_name == "location" and (filter_name in li.text.lower()) and len(self.locations_list) > 0:
-    #                 li.click()
-    #                 a_tags = li.find_elements(By.TAG_NAME, "a")
-    #                 found = self.select_filters(filter_name=filter_name, filter_value=filter_value, a_tags=a_tags)
-    #                 time.sleep(1)
-    #                 return found
-        
     def apply_filters(self, filters):
         self.filters = filters
         for filter_name, filter_value in filters.items():
@@ -174,7 +120,7 @@ class IndeedJobScraper:
                 elif filter_name == "job_type":
                     self.job_type = filter_value
                 elif filter_name == "location":
-                    self.location = filter_value 
+                    self.location = filter_value
                 elif filter_name == "more_keywords":
                     self.more_keywords = filter_value
                 elif filter_name == "exclusives":
@@ -199,11 +145,10 @@ class IndeedJobScraper:
                         if filter_name == "location":
                             continue
                         if filter_name.lower() in li.text.lower():
-                            
                             li.click()
-                                
+
                             a_tags = li.find_elements(By.TAG_NAME, "a")
-                            
+
                             self.select_filters(filter_name=filter_name, filter_value=filter_value, a_tags=a_tags)
                             time.sleep(1)
                             
@@ -217,7 +162,7 @@ class IndeedJobScraper:
                 close_btn = modal_.find_element(By.TAG_NAME, "button")
                 close_btn.click()
             except Exception as e:
-                print("Exception modal not found: ",)
+                print("Exception modal not found: ", )
 
     def scrape_jobs(self):
         if not os.path.exists("data"):
@@ -228,24 +173,29 @@ class IndeedJobScraper:
                 close_btn = modal_.find_element(By.TAG_NAME, "button")
                 close_btn.click()
             except Exception as e:
-                print("Exception modal not found: ",)
+                print("Exception modal not found: ", )
             job_cards_div = self.driver.find_element(By.ID, "mosaic-provider-jobcards")
             job_list_items = job_cards_div.find_elements(By.CLASS_NAME, "css-5lfssm ")
-            
+
             for item in job_list_items:
                 try:
                     is_included = False
-                    if self.search_term.lower() in item.text.lower():
+                    splited_text_title = self.search_term.split()
+                    if all(word.lower() in item.text.lower() for word in splited_text_title):
                         self.driver.execute_script("arguments[0].scrollIntoView();", item)
                         item.click()
-                        
+
                         try:
                             self.job_type = ""
-                            self.job_type = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_elements(By.CLASS_NAME, "css-1cvo3fd")[-1].text
+                            self.job_type = \
+                                item.find_element(By.CLASS_NAME, "job_seen_beacon").find_elements(By.CLASS_NAME,
+                                                                                                  "css-1cvo3fd")[
+                                    -1].text
                         except Exception as e:
                             print(e)
                         try:
-                            self.job_title = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(By.CLASS_NAME, "jobTitle").text
+                            self.job_title = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(
+                                By.CLASS_NAME, "jobTitle").text
                         except Exception as e:
                             print(e)
 
@@ -279,24 +229,27 @@ class IndeedJobScraper:
                         job_exp_level = self.exp_level
                     if self.education_level:
                         job_education_level = self.education_level
-                        
-                   
-                    if (self.keyword.lower() in job_description.lower() or self.keyword.lower() in job_cards_div.text.lower()):
+
+                    if (
+                            self.keyword.lower() in job_description.lower() or self.keyword.lower() in job_cards_div.text.lower()):
                         if len(self.more_keywords) > 0 or len(self.more_exclusives) > 0:
                             if len(self.more_keywords) > 0:
                                 for key in self.more_keywords:
-                                    if (key.lower() in job_description.lower()) or (key.lower() in job_cards_div.text.lower()):
+                                    if (key.lower() in job_description.lower()) or (
+                                            key.lower() in job_cards_div.text.lower()):
                                         self.include_more_keywords = True
                                     else:
                                         self.include_more_keywords = False
                             if len(self.more_exclusives) > 0:
                                 for exc in self.more_exclusives:
-                                    if (exc.lower() in job_cards_div.text.lower()) and (exc.lower() in job_description.lower()):
+                                    if (exc.lower() in job_cards_div.text.lower()) and (
+                                            exc.lower() in job_description.lower()):
                                         self.exclude_more_keywords = True
                                     else:
                                         self.exclude_more_keywords = False
-                            if (self.include_more_keywords and len(self.more_keywords) > 0) or (self.exclude_more_keywords  and len(self.more_exclusives) > 0):
-                                self.scraped_jobs.append({  
+                            if (self.include_more_keywords and len(self.more_keywords) > 0) or (
+                                    self.exclude_more_keywords and len(self.more_exclusives) > 0):
+                                self.scraped_jobs.append({
                                     'posted_at': posted_at,
                                     'job_title': job_title,
                                     'company_name': company_name,
@@ -309,44 +262,44 @@ class IndeedJobScraper:
                                     'job_description': job_description
                                 })
                                 self.write_to_csv(
-                                        posted_at, 
-                                        job_title,
-                                        company_name,
-                                        company_link,
-                                        company_location, 
-                                        job_type, 
-                                        job_salary,
-                                        job_exp_level, 
-                                        job_education_level, 
-                                        job_description
-                                        )
+                                    posted_at,
+                                    job_title,
+                                    company_name,
+                                    company_link,
+                                    company_location,
+                                    job_type,
+                                    job_salary,
+                                    job_exp_level,
+                                    job_education_level,
+                                    job_description
+                                )
 
                         else:
-                            self.scraped_jobs.append({  
-                                    'posted_at': posted_at,
-                                    'job_title': job_title,
-                                    'company_name': company_name,
-                                    'company_link': company_link,
-                                    'company_location': company_location,
-                                    'job_type': job_type,
-                                    'job_salary': job_salary,
-                                    'job_exp_level': job_exp_level,
-                                    'job_education_level': job_education_level,
-                                    'job_description': job_description
-                                })
+                            self.scraped_jobs.append({
+                                'posted_at': posted_at,
+                                'job_title': job_title,
+                                'company_name': company_name,
+                                'company_link': company_link,
+                                'company_location': company_location,
+                                'job_type': job_type,
+                                'job_salary': job_salary,
+                                'job_exp_level': job_exp_level,
+                                'job_education_level': job_education_level,
+                                'job_description': job_description
+                            })
                             self.write_to_csv(
-                                    posted_at, 
-                                    job_title,
-                                    company_name, 
-                                    company_link,
-                                    company_location, 
-                                    job_type, 
-                                    job_salary,
-                                    job_exp_level, 
-                                    job_education_level, 
-                                    job_description
-                                    )
-                             
+                                posted_at,
+                                job_title,
+                                company_name,
+                                company_link,
+                                company_location,
+                                job_type,
+                                job_salary,
+                                job_exp_level,
+                                job_education_level,
+                                job_description
+                            )
+
                 except Exception as e:
                     print("Exception occurred: ", e)
                     continue
@@ -363,7 +316,7 @@ class IndeedJobScraper:
                     continue
                 break
 
-        return self.scraped_jobs 
+        return self.scraped_jobs
 
     def extract_posted_at(self, item):
         posted_at_items = item.text.split("\n")
@@ -377,7 +330,6 @@ class IndeedJobScraper:
                 return posted_at_items[-1].replace("More...", "")
             else:
                 return posted_at_items[-1]
-
 
     def extract_job_details(self):
         time.sleep(random.randint(1, 2))
@@ -394,7 +346,7 @@ class IndeedJobScraper:
         try:
             if not self.job_title:
                 self.job_title = self.driver.find_element(By.CLASS_NAME,
-                                                             'jobsearch-JobInfoHeader-title-container').text
+                                                          'jobsearch-JobInfoHeader-title-container').text
         except NoSuchElementException:
             pass
 
@@ -415,7 +367,7 @@ class IndeedJobScraper:
             pass
 
         try:
-            
+
             job_salary = self.wait.until(EC.presence_of_element_located((By.ID, 'salaryInfoAndJobType')))
             job_salary = job_salary.text
             if not job_salary:
@@ -428,10 +380,9 @@ class IndeedJobScraper:
                         job_salary = job_salary.text
             if "time" in job_salary[0].lower():
                 job_salary = ""
-            
+
         except Exception as e:
             print(e)
-            
 
         try:
             if not self.job_type:
@@ -461,13 +412,8 @@ class IndeedJobScraper:
             else:
                 job_exp_level = "No experience required"
 
-
-            
-           
-
-
             if "high school degree" in job_description.lower() or "high school" in job_description.lower():
-                job_education_level = "High School Degree"    
+                job_education_level = "High School Degree"
             elif "secondary school" in job_description.lower():
                 job_education_level = "Secondary School"
             elif "high school" in job_description.lower():
@@ -485,10 +431,10 @@ class IndeedJobScraper:
 
         return self.job_title, company_name, company_link, company_location, self.job_type, job_salary, job_exp_level, job_education_level, job_description
 
-    def write_to_csv(self, posted_at, job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level,
+    def write_to_csv(self, posted_at, job_title, company_name, company_link, company_location, job_type, job_salary,
+                     job_exp_level,
                      job_education_level, job_description):
-        
-       
+
         filename = f"{self.search_term}.csv"
         filename = filename.replace(" ", "_")
         directory = os.path.splitext(filename)[0]
@@ -502,17 +448,17 @@ class IndeedJobScraper:
             if os.path.exists(file_path):
                 os.remove(file_path)
                 self.is_remove_file = False
-        headers = ['Posted At', 'Job Title', 'Company Name', 'Company Link', 'Company Location', 'Job Type', 'Job Salary',
+        headers = ['Posted At', 'Job Title', 'Company Name', 'Company Link', 'Company Location', 'Job Type',
+                   'Job Salary',
                    'Job Experience Level', 'Job Education', 'Job Description']
-        
-        
+
         with open(file_path, mode='a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
                 writer.writerow(headers)
-            writer.writerow([posted_at, job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level,
+            writer.writerow([posted_at, job_title, company_name, company_link, company_location, job_type, job_salary,
+                             job_exp_level,
                              job_education_level])
 
     def close_driver(self):
         self.driver.quit()
-
