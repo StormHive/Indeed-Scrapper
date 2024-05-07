@@ -36,7 +36,7 @@ class IndeedJobScraper:
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
         # self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 3)
-        self.search_term = search_term
+        self.search_term = "Quality Engineer"
         self.location = ""
         self.locationcode = ""
         self.is_remove_file = True
@@ -58,7 +58,7 @@ class IndeedJobScraper:
         self.filters = {}
 
     def navigate_to_indeed(self):
-        url = "https://www.indeed.com/q-quality-engineer-jobs.html?vjk=4de5529aa2a921b0"
+        url = "https://www.indeed.com/"
         self.driver.get(url)
 
     def search_jobs(self):
@@ -180,36 +180,34 @@ class IndeedJobScraper:
             for item in job_list_items:
                 try:
                     is_included = False
-                    if self.search_term.lower() in item.text.lower():
-                        self.driver.execute_script("arguments[0].scrollIntoView();", item)
-                        item.click()
+                    
+                    self.driver.execute_script("arguments[0].scrollIntoView();", item)
+                    item.click()
 
-                        try:
-                            self.job_type = ""
-                            self.job_type = \
-                                item.find_element(By.CLASS_NAME, "job_seen_beacon").find_elements(By.CLASS_NAME,
-                                                                                                  "css-1cvo3fd")[
-                                    -1].text
-                        except Exception as e:
-                            print(e)
-                        try:
-                            self.job_title = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(
-                                By.CLASS_NAME, "jobTitle").text
-                        except Exception as e:
-                            print(e)
+                    try:
+                        self.job_type = ""
+                        self.job_type = \
+                            item.find_element(By.CLASS_NAME, "job_seen_beacon").find_elements(By.CLASS_NAME,
+                                                                                                "css-1cvo3fd")[
+                                -1].text
+                    except Exception as e:
+                        print(e)
+                    try:
+                        self.job_title = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(
+                            By.CLASS_NAME, "jobTitle").text
+                    except Exception as e:
+                        print(e)
 
                         time.sleep(random.randint(1, 2))
-                    else:
-                        continue
                     try:
                         posted_at = self.extract_posted_at(item)
                     except Exception as e:
                         print("Error occurred:", e)
                     job_title, company_name, company_link, company_location, job_type, job_salary, job_exp_level, job_education_level, job_description = self.extract_job_details()
                     print(company_location)
-
                     splited_text_title = self.search_term.split()
-                    if not all(word.lower() in job_title.lower() for word in splited_text_title):
+                    if (not all(word.lower() in job_title.lower() for word in splited_text_title)) and (not (self.search_term.lower() in item.text.lower())):
+                        print("IN Not selection")
                         continue
                     if not job_type:
                         job_type = self.job_type
