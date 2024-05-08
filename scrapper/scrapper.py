@@ -27,6 +27,7 @@ class IndeedJobScraper:
 
         self.options.add_argument("--window-size=1920,1080")
         self.options.add_argument("--disable-gpu")
+        self.options.add_argument("--disable-geolocation")
         # self.options.add_argument('--headless')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument('--no-sandbox')
@@ -35,8 +36,9 @@ class IndeedJobScraper:
             "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
         # self.driver = webdriver.Chrome()
+       
         self.wait = WebDriverWait(self.driver, 3)
-        self.search_term = "Quality Engineer"
+        self.search_term = search_term
         self.location = ""
         self.locationcode = ""
         self.is_remove_file = True
@@ -61,19 +63,20 @@ class IndeedJobScraper:
         url = "https://www.indeed.com/"
         self.driver.get(url)
 
-    def search_jobs(self):
+    def search_jobs(self, location):
         search_bar_where = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-where")))
         search_bar_where.clear()
-        if self.location:
-            splited_location = self.location.split(",")
+        if location:
+            splited_location = location.split(",")
             self.location = splited_location[0]
             self.locationcode = splited_location[1]
+            search_bar_where.clear()
             search_bar_where.send_keys(self.location)
         search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
         search_bar.send_keys(self.search_term)
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
-        time.sleep(1.5)
+        time.sleep(1)
 
     def calculate_salary_range(self, job_salary, job_pay_type):
         try:
