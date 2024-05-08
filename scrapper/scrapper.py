@@ -78,6 +78,32 @@ class IndeedJobScraper:
         search_button.click()
         time.sleep(1)
 
+    
+    def select_filters(self, filter_name, filter_value, a_tags):  
+        for a_tag in a_tags:
+            if filter_name == "location":
+                time.sleep(1)
+                if len(self.locations_list) <= 0:
+                    self.add_locations(a_tags=a_tags)
+                    self.a_tags = a_tags                
+                                    
+                for i, value in enumerate(self.locations_list):  
+                    if filter_value and filter_value.lower() in value.lower() and value.lower() in a_tag.text.lower():
+                        print("INNER")
+                        href = a_tag.get_attribute("href")
+                        print("HREf", href)
+                        self.driver.get(href)
+                        self.locations_list.pop(i)  
+                        found = True
+                        return found  
+                    
+            else:
+                if filter_value:
+                    if filter_value.lower() in a_tag.text.lower():
+                        href = a_tag.get_attribute("href")
+                        self.driver.get(href)
+        time.sleep(1)
+        return found
     def calculate_salary_range(self, job_salary, job_pay_type):
         try:
             if not self.min_salary:
