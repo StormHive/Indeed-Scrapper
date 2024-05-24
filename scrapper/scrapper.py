@@ -28,7 +28,7 @@ class IndeedJobScraper:
         self.options.add_argument("--window-size=1920,1080")
         self.options.add_argument("--disable-gpu")
         self.options.add_argument("--disable-geolocation")
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
@@ -41,6 +41,7 @@ class IndeedJobScraper:
         self.search_term = search_term
         self.location = ""
         self.locationcode = ""
+        self.job_link = ""
         self.is_remove_file = True
         self.keyword = ""
         self.exclusives = ""
@@ -66,14 +67,16 @@ class IndeedJobScraper:
     def search_jobs(self, location):
         search_bar_where = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-where")))
         search_bar_where.clear()
+        search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
+        search_bar.send_keys(self.search_term)
         if location:
             splited_location = location.split(",")
             self.location = splited_location[0]
             self.locationcode = splited_location[1]
             search_bar_where.clear()
             search_bar_where.send_keys(self.location)
-        search_bar = self.wait.until(EC.presence_of_element_located((By.ID, "text-input-what")))
-        search_bar.send_keys(self.search_term)
+        search_bar_where.clear()
+        search_bar_where.send_keys(self.location)
         search_button = self.driver.find_element(By.XPATH, '//button[@class="yosegi-InlineWhatWhere-primaryButton"]')
         search_button.click()
         time.sleep(1)
@@ -224,6 +227,7 @@ class IndeedJobScraper:
                     try:
                         self.job_title = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(
                             By.CLASS_NAME, "jobTitle").text
+                        self.job_link = item.find_element(By.CLASS_NAME, "job_seen_beacon").find_element(By.CLASS_NAME, "jobTitle").find_element(By.TAG_NAME, "a").get_attribute("href")
                     except Exception as e:
                         print(e)
 
@@ -280,6 +284,7 @@ class IndeedJobScraper:
                             if (self.include_more_keywords and len(self.more_keywords) > 0) or (
                                     self.exclude_more_keywords and len(self.more_exclusives) > 0):
                                 self.scraped_jobs.append({
+                                    'job_link': self.job_link,
                                     'posted_at': posted_at,
                                     'job_title': job_title,
                                     'company_name': company_name,
@@ -294,6 +299,7 @@ class IndeedJobScraper:
                                 self.write_to_csv(
                                     posted_at,
                                     job_title,
+                                    self.job_link,
                                     company_name,
                                     company_link,
                                     company_location,
@@ -306,6 +312,7 @@ class IndeedJobScraper:
 
                         else:
                             self.scraped_jobs.append({
+                                'job_link': self.job_link,
                                 'posted_at': posted_at,
                                 'job_title': job_title,
                                 'company_name': company_name,
@@ -320,6 +327,7 @@ class IndeedJobScraper:
                             self.write_to_csv(
                                 posted_at,
                                 job_title,
+                                self.job_link,
                                 company_name,
                                 company_link,
                                 company_location,
@@ -461,7 +469,7 @@ class IndeedJobScraper:
 
         return self.job_title, company_name, company_link, company_location, self.job_type, job_salary, job_exp_level, job_education_level, job_description
 
-    def write_to_csv(self, posted_at, job_title, company_name, company_link, company_location, job_type, job_salary,
+    def write_to_csv(self, posted_at, job_title,job_link,  company_name, company_link, company_location, job_type, job_salary,
                      job_exp_level,
                      job_education_level, job_description):
 
@@ -478,7 +486,7 @@ class IndeedJobScraper:
             if os.path.exists(file_path):
                 os.remove(file_path)
                 self.is_remove_file = False
-        headers = ['Posted At', 'Job Title', 'Company Name', 'Company Link', 'Company Location', 'Job Type',
+        headers = ['Posted At', 'Job Title','Job Link', 'Company Name', 'Company Link', 'Company Location', 'Job Type',
                    'Job Salary',
                    'Job Experience Level', 'Job Education', 'Job Description']
 
@@ -486,7 +494,7 @@ class IndeedJobScraper:
             writer = csv.writer(file)
             if file.tell() == 0:
                 writer.writerow(headers)
-            writer.writerow([posted_at, job_title, company_name, company_link, company_location, job_type, job_salary,
+            writer.writerow([posted_at, job_title, job_link, company_name, company_link, company_location, job_type, job_salary,
                              job_exp_level,
                              job_education_level])
 

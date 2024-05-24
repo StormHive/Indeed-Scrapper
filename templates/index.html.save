@@ -321,7 +321,7 @@
                             <tr>
                                 <th scope="col">Date Posted</th>
                                 <th scope="col">Job Title</th>
-                                <th scope="col">Job Link</th>
+                                <th scope="col"> Job Link</th>
                                 <th scope="col">Company Name</th>
                                 <th scope="col">Indeed Link</th>
                                 <th scope="col">Location</th>
@@ -387,12 +387,11 @@
                 company_link.textContent = job.company_link;
                 companyLocationCell.appendChild(company_link);
 
-                var job_link = document.createElement("a");
-                job_link.href = job.job_link;
-                job_link.target = "_blank";
-                job_link.textContent = job.job_link;
-                jobLinkCell.appendChild(job_link);
-
+                var company_link = document.createElement("a");
+                company_link.href = job.company_link;
+                company_link.target = "_blank";
+                company_link.textContent = job.company_link;
+                companyLocationCell.appendChild(company_link);                
 
                 postedAtCell.textContent = job.posted_at;
                 jobTitleCell.textContent = job.job_title;
