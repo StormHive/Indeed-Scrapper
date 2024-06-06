@@ -16,28 +16,21 @@ from webdriver_manager.chrome import ChromeDriverManager
 class IndeedJobScraper:
     def __init__(self, search_term):
         self.options = webdriver.ChromeOptions()
-        self.API_KEY = "db82749045e9559f2a0ea358a71ccdac"
-        self.proxy_options = {
-            'proxy': {
-                'http': f'http://scraperapi:{self.API_KEY}@proxy-server.scraperapi.com:8001',
-                'https': f'http://scraperapi:{self.API_KEY}@proxy-server.scraperapi.com:8001',
-                'no_proxy': 'localhost,127.0.0.1'
-            }
-        }
+        
+        HOSTNAME = 'us.smartproxy.com'                                                       #Proxy host:port configuration
+        PORT = '10000'
+        proxy_str = '{hostname}:{port}'.format(hostname=HOSTNAME, port=PORT)
 
         self.options.add_argument("--window-size=1920,1080")
         self.options.add_argument("--disable-gpu")
-        self.options.add_argument("--disable-geolocation")
-        self.options.add_argument('--headless')
+        # self.options.add_argument('--headless')
         self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument('--no-sandbox')
-        self.options.add_argument('--disable-dev-shm-usage')
         self.options.add_argument(
             "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
-        # self.driver = webdriver.Chrome()
-       
-        self.wait = WebDriverWait(self.driver, 3)
+        self.options.add_argument('--proxy-server={}'.format(proxy_str))
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)       
+        self.wait = WebDriverWait(self.driver, 2)
         self.search_term = search_term
         self.location = ""
         self.locationcode = ""
@@ -59,6 +52,12 @@ class IndeedJobScraper:
         self.exp_level = ""
         self.education_level = ""
         self.filters = {}
+
+    def get_current_ip(self):
+        self.driver.get("https://api.ipify.org?format=json")  # This site returns the current IP address in JSON format
+        time.sleep(5)
+        ip_info = self.driver.find_element_by_tag_name("body").text
+        print("Current IP:", ip_info)  # Output the current IP address to console
 
     def navigate_to_indeed(self):
         url = "https://www.indeed.com/"
